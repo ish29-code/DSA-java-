@@ -1,0 +1,61 @@
+Input: s1 = "timetopractice", s2 = "toc"
+Output: "toprac"
+
+class Solution {
+    public static String smallestWindow(String s1, String s2) {
+        if (s1.length() < s2.length()) {
+            return "";
+        }
+
+        // Step 1: Create a map to count frequencies of characters in s2
+        HashMap<Character, Integer> s2Freq = new HashMap<>();
+        for (char c : s2.toCharArray()) {
+            s2Freq.put(c, s2Freq.getOrDefault(c, 0) + 1);
+        }
+
+        // Variables to keep track of the window
+        int left = 0, right = 0;
+        int Startidx = 0;
+        int minLen = Integer.MAX_VALUE;
+        int s2len = s2Freq.size();
+        int matchcount = 0;
+
+        // Count frequencies of characters in the current window
+        HashMap<Character, Integer> windowFreq = new HashMap<>();
+
+        // Step 2: Expand the window with the right pointer
+        while (right < s1.length()) {
+            char c = s1.charAt(right);
+            windowFreq.put(c, windowFreq.getOrDefault(c, 0) + 1);
+
+            // Check if the current character meets the required frequency
+            if (s2Freq.containsKey(c) && windowFreq.get(c).intValue() == s2Freq.get(c).intValue()) {
+                matchcount++;
+            }
+
+            // Step 3: Contract the window with the left pointer
+            while (left <= right && matchcount == s2len) {
+                char leftChar = s1.charAt(left);
+
+                // Update the minimum window size and its start index
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    Startidx = left;
+                }
+
+                windowFreq.put(leftChar, windowFreq.get(leftChar) - 1);
+                if (s2Freq.containsKey(leftChar) && windowFreq.get(leftChar) < s2Freq.get(leftChar)) {
+                    matchcount--;
+                }
+
+                left++;
+            }
+
+            right++;
+        }
+
+        return minLen == Integer.MAX_VALUE ? "" : s1.substring(Startidx, Startidx + minLen);
+    }
+
+}
+
