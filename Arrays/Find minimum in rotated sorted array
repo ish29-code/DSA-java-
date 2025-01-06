@@ -1,0 +1,15 @@
+Input: nums = [3,4,5,1,2]
+Output: 1
+IN THIS WE HAVE TO FIND THE MIN ELEMENT FROM WHICH ARRAY IS ROTATED.....
+
+class Solution {
+    public int findMin(int[] nums) {
+        int n = nums.length;
+        for(int i=1;i<n;i++){
+            if(nums[i-1]>nums[i]){
+                return nums[i];
+            }
+        }
+        return nums[0];
+    }
+}
