@@ -1,0 +1,32 @@
+class Solution {
+    public String longestPalindrome(String s) {//o(n2)
+        if(s.length()<=1){
+            return s;
+        }
+        String maxstr = s.substring(0,1);
+
+        for(int i=0;i<s.length()-1;i++){
+            String odd = helper(s,i,i);
+            String even = helper(s,i,i+1);
+
+            if(odd.length()>maxstr.length()){
+                maxstr=odd;
+            }
+            if(even.length()>maxstr.length()){
+                maxstr=even;
+            }
+        }
+        return maxstr;
+    }
+    static String helper(String s,int left,int right){
+        while(left>=0 && right<s.length() && s.charAt(left)==s.charAt(right)){
+            left--;
+            right++;
+        }
+        return s.substring(left+1,right);
+    }
+}
+
+Input: s = "babad"
+Output: "bab"
+Explanation: "aba" is also a valid answer.
