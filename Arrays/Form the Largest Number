@@ -1,0 +1,22 @@
+
+
+//User function Template for Java
+
+class Solution {
+    String printLargest(int n, String[] arr) {
+        // code here
+        //by custom comprator
+        Comparator<String>comparestr = (x,y) -> (x+y).compareTo(y+x);
+        
+        Arrays.sort(arr,comparestr.reversed());
+        
+        if(arr[0].equals("0")){
+            return "0";
+        }
+        StringBuilder result = new StringBuilder();
+        for(String num : arr){
+            result.append(num);
+        }
+        return result.toString();
+    }
+}
