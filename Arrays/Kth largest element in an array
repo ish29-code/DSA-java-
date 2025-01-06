@@ -1,0 +1,11 @@
+Input: nums = [3,2,1,5,6,4], k = 2
+Output: 5
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int N = nums.length;
+        Arrays.sort(nums);
+        return nums[N-k];
+    }
+    //in every sorted arry last last element will be the greatest as we finf last element as N-1 so for kth largest or last element we have to do (N -K)
+}
