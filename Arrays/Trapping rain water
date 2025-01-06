@@ -1,0 +1,28 @@
+Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+Output: 6
+
+
+class Solution {
+    public int trap(int[] height) {
+       int left = 0;
+       int right = height.length-1;
+       int leftmax = height[left];
+       int rightmax = height[right];
+       int trapedwater = 0;
+
+       while(left<right){
+            if(leftmax<rightmax){
+                left++;
+                leftmax = Math.max(leftmax,height[left]);
+                trapedwater += leftmax-height[left];
+            }
+            else{
+                right--;
+                rightmax = Math.max(rightmax,height[right]);
+                trapedwater += rightmax-height[right];
+            }
+       }
+       return trapedwater;
+
+    }
+}
