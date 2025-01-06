@@ -1,0 +1,28 @@
+Input: hval[] = {5, 5, 10, 100, 10, 5}
+Output: 110
+Explanation: Pick the subsequence {5, 100, 5}.
+The sum is 110 and no two elements are adjacent. This is the highest possible sum.
+
+class Solution {
+    // Function to find the maximum money the thief can get.
+    public int findMaxSum(int arr[]) {
+        // Your code here
+        if(arr.length==0){
+            return 0;
+        }
+        if(arr.length==1){
+            return arr[0];
+        }
+        
+        int include=arr[0];
+        int exclude=0;
+        
+        for(int i=1;i<arr.length;i++){
+            int newinc = Math.max(include,exclude);
+            
+            include=arr[i] + exclude;
+            exclude=newinc;
+        }
+        return Math.max(include,exclude);
+    }
+}
