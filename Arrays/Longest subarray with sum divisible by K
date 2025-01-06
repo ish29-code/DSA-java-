@@ -1,0 +1,28 @@
+Input: arr[] = [2, 7, 6, 1, 4, 5], k = 3
+Output: 4
+
+class Solution{
+    int longSubarrWthSumDivByK(int a[], int n, int k)
+    {
+        // Complete the function
+       Map<Integer,Integer> remainderMap = new HashMap<>();
+       int cursum = 0;
+       int maxlen = 0;
+       
+       remainderMap.put(0,-1);
+       
+       for(int i=0;i<n;i++){
+           cursum += a[i];
+           int remainder = ((cursum%k)+k)%k;//adjusting negative values
+           
+           if(remainderMap.containsKey(remainder)){
+               maxlen = Math.max(maxlen,i-remainderMap.get(remainder));
+           }
+           else{
+               remainderMap.put(remainder,i);
+           }
+       }
+       return maxlen;
+    }
+ 
+}
