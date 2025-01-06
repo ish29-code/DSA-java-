@@ -1,0 +1,41 @@
+class Solution {
+    public String minWindow(String s, String t) {
+        if(s.length()<t.length()){
+            return "";
+        }
+        HashMap<Character,Integer> tfeq = new HashMap<>();
+        for(char c : t.toCharArray()){
+            tfeq.put(c,tfeq.getOrDefault(c,0)+1);
+        }
+        int left=0,right=0;
+        int minlen = Integer.MAX_VALUE;
+        int startidx = 0;
+        int tlen = tfeq.size();
+        int matchcount = 0;
+        HashMap<Character,Integer> windowfeq = new HashMap<>();
+
+        while(right<s.length()){
+            char c = s.charAt(right);
+            windowfeq.put(c,windowfeq.getOrDefault(c,0)+1);
+
+            if(tfeq.containsKey(c) && windowfeq.get(c).intValue()==tfeq.get(c).intValue()){
+                matchcount++;
+            }
+            while(left<=right && tlen==matchcount){
+                char leftchar = s.charAt(left);
+                if(right-left+1<minlen){
+                    minlen=right-left+1;
+                    startidx = left;
+                }
+
+                windowfeq.put(leftchar,windowfeq.get(leftchar)-1);
+                if(tfeq.containsKey(leftchar) && windowfeq.get(leftchar)<tfeq.get(leftchar)){
+                    matchcount--;
+                }
+                left++;
+            }
+            right++;
+        }
+        return minlen == Integer.MAX_VALUE? "" : s.substring(startidx,minlen+startidx);
+    }
+}
