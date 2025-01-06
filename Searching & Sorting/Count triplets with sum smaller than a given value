@@ -1,0 +1,31 @@
+Input : arr[] = {-2, 0, 1, 3}
+        sum = 2.
+Output : 2
+Explanation :  Below are triplets with sum less than 2
+               (-2, 0, 1) and (-2, 0, 3) 
+
+class Solution {
+    long countTriplets(int n, int sum, long arr[]) {
+        Arrays.sort(arr); // Sort the array
+        long count = 0;
+
+        // Iterate through each element
+        for (int i = 0; i < n - 2; i++) {
+            int left = i + 1;
+            int right = n - 1;
+
+            // Use two pointers to find pairs that sum up with arr[i] to be less than the given sum
+            while (left < right) {
+                if (arr[i] + arr[left] + arr[right] < sum) {
+                    // All triplets with indices (i, left, x) where left < x <= right will have a sum less than the given value
+                    count += (right - left);
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+
+        return count;
+    }
+}
