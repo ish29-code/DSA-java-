@@ -1,0 +1,73 @@
+Input: mat[M][N] =  {{‘X’, ‘O’, ‘X’, ‘X’, ‘X’, ‘X’}, 
+                                    {‘X’, ‘O’, ‘X’, ‘X’, ‘O’, ‘X’},
+                                    {‘X’, ‘X’, ‘X’, ‘O’, ‘O’, ‘X’},
+                                    {‘O’, ‘X’, ‘X’, ‘X’, ‘X’, ‘X’},
+                                    {‘X’, ‘X’, ‘X’, ‘O’, ‘X’, ‘O’},
+                                    {‘O’, ‘O’, ‘X’, ‘O’, ‘O’, ‘O’}};
+
+
+Output: mat[M][N] =  {{‘X’, ‘O’, ‘X’, ‘X’, ‘X’, ‘X’},
+                                        {‘X’, ‘O’, ‘X’, ‘X’, ‘X’, ‘X’},
+                                        {‘X’, ‘X’, ‘X’, ‘X’, ‘X’, ‘X’},
+                                        {‘O’, ‘X’, ‘X’, ‘X’, ‘X’, ‘X’},
+                                        {‘X’, ‘X’, ‘X’, ‘O’, ‘X’, ‘O’},
+                                        {‘O’, ‘O’, ‘X’, ‘O’, ‘O’, ‘O’}};
+
+
+class Solution {
+    static char[][] fill(char mat[][]) {
+        // code here
+        if(mat==null || mat.length==0){
+            return mat;
+        }
+        
+        int m = mat.length;
+        int n = mat[0].length;
+        
+        for(int row=0;row<m;row++){
+            if(mat[row][0]=='O'){
+                dfs(mat,row,0);
+            }
+            if(mat[row][n-1]=='O'){
+                dfs(mat,row,n-1);
+            }
+        }
+        
+        for(int col=0;col<n;col++){
+            if(mat[0][col]=='O'){
+                dfs(mat,0,col);
+            }
+            if(mat[m-1][col]=='O'){
+                dfs(mat,m-1,col);
+            }
+        }
+        
+        //replace o to x when in inside because we already checeked corner cases
+        //if in corner then no dont reeplce it with x just remain o
+        for(int row=0;row<m;row++){
+            for(int col=0;col<n;col++){
+                if(mat[row][col]=='O'){
+                    mat[row][col]='X';
+                }
+                else if(mat[row][col]=='V'){
+                    mat[row][col]='O';
+                }
+            }
+        }
+        return mat;
+        
+    }
+     private static void dfs(char mat[][],int row,int col){
+        if(row<0 || row>=mat.length || col<0 || col>=mat[0].length || mat[row][col]!='O'){
+            return;
+        }
+        
+        mat[row][col]='V';//visited
+        
+        dfs(mat,row+1,col);//down
+        dfs(mat,row-1,col);//up
+        dfs(mat,row,col+1);//left
+        dfs(mat,row,col-1);//right
+    }
+}
+
