@@ -1,0 +1,23 @@
+class Solution
+{
+    //Function to arrange all letters of a string in lexicographical 
+    //order using Counting Sort.
+    public static String countSort(String arr)
+    {
+        // code here
+        char s[] = arr.toCharArray();
+        Arrays.sort(s);
+        
+        String sb = new String(s);
+        return sb;
+    }
+}
+
+Input:
+N = 5
+S = "edsab"
+Output:
+abdes
+Explanation: 
+In lexicographical order, string will be 
+abdes.
