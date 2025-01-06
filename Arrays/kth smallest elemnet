@@ -1,0 +1,13 @@
+Input: arr[] = [7, 10, 4, 3, 20, 15], k = 3
+Output:  7
+
+CAN DO WITH PRIORITY QUEUE TOO....
+
+class Solution {
+    public static int kthSmallest(int[] arr, int k) {
+        // Your code here
+        Arrays.sort(arr);
+        int n = arr.length;
+        return arr[k-1];
+    }
+}
