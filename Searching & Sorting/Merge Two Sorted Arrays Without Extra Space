@@ -1,0 +1,27 @@
+Input: a[] = [2, 4, 7, 10], b[] = [2, 3]
+Output: a[] = [2, 2, 3, 4], b[] = [7, 10] 
+Explanation: Combined sorted array = [2, 2, 3, 4, 7, 10], array a[] contains smallest 4 elements: 2, 2, 3 and 4, and array b[] contains remaining 2 elements: 7, 10.
+
+class Solution {
+    // Function to merge the arrays.
+    public void mergeArrays(int a[], int b[]) {
+        // code here
+        int m = a.length;
+        int n = b.length;
+        
+        int i = m-1;
+        int j = 0;
+        
+        while(i>=0 && j<n){
+            if(a[i]>b[j]){
+                int temp = a[i];
+                a[i] =b[j];
+                b[j] = temp;
+            }
+            i--;
+            j++;
+        }
+        Arrays.sort(a);
+        Arrays.sort(b);
+    }
+}
