@@ -1,0 +1,28 @@
+class Solution {
+    int longestPrefixSuffix(String s) {
+        // code here
+        int p = 0;  // Prefix pointer
+        int su = 1;  // Suffix pointer
+        int cnt = 0;  // Count of matching prefix-suffix
+        int pos = 1;  // Starting position of suffix
+        int n = s.length();  // Length of the string
+
+        while(p < n && su < n) {
+            if(s.charAt(p) == s.charAt(su)) {
+                cnt++;
+                p++;
+                su++;
+            } else {
+                cnt = 0;
+                pos++;
+                su = pos;
+                p = 0;
+            }
+        }
+
+        return cnt;
+    }
+}
+input: s = "abab"
+Output: 2
+Explanation: "ab" is the longest prefix and suffix. 
