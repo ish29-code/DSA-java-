@@ -1,0 +1,51 @@
+FOR EXAMPLE -------> arr[] = {7, 3, 2, 4, 9, 12, 56}, m = 3 ----------> 2
+FIRSTLY SORT THE ARRAY [2,3,4,7,9,12,56]
+THEN LOOP i=0 to (i+m-1)<arr.size();
+then finding differ then min of currdif and mindiff then return mindiff
+
+class Solution {
+    public int findMinDiff(ArrayList<Integer> arr, int m) {
+        // your code here
+        Collections.sort(arr);
+        
+        int mindiff = Integer.MAX_VALUE;
+        
+        for(int i=0;(i+m-1)<arr.size();i++){
+            int currdiff = arr.get(i+m-1)-arr.get(i);
+            if(currdiff<mindiff){
+                mindiff = currdiff;
+            }
+        }
+        return mindiff;
+    }
+}
+
+Initial Array:
+arr = [7, 3, 2, 4, 9, 12, 56]
+Sort the Array:
+arr = [2, 3, 4, 7, 9, 12, 56]
+Initialize Minimum Difference:
+mindiff = Integer.MAX_VALUE
+Loop Through the Sorted Array:
+First Iteration (i = 0):
+Subarray: [2, 3, 4]
+currdiff = 4 - 2 = 2
+mindiff = Math.min(Integer.MAX_VALUE, 2) = 2
+Second Iteration (i = 1):
+Subarray: [3, 4, 7]
+currdiff = 7 - 3 = 4
+mindiff = Math.min(2, 4) = 2
+Third Iteration (i = 2):
+Subarray: [4, 7, 9]
+currdiff = 9 - 7 = 2
+mindiff = Math.min(2, 2) = 2
+Fourth Iteration (i = 3):
+Subarray: [7, 9, 12]
+currdiff = 12 - 9 = 3
+mindiff = Math.min(2, 3) = 2
+Fifth Iteration (i = 4):
+Subarray: [9, 12, 56]
+currdiff = 56 - 12 = 44
+mindiff = Math.min(2, 44) = 2
+Return the Result:
+return mindiff = 2
