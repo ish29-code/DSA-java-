@@ -1,0 +1,36 @@
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+
+
+BASICALLY IN THIS WE HAVE TO FIND THE AREA 
+FOR THAT HIGHT AND DISTACE(BASE) REQUIRED
+HEIGHT SHOULD BE MINIMUM BECAUSE IT ONLY DEPEND ON MIN HEIGHT OTHERWISE IT WILL LEAK
+
+class Solution {
+    public int maxArea(int[] height) {
+        int n = height.length;
+        int left = 0;
+        int right = n-1;
+        int maxarea = 0;
+
+        while(left<right){
+            int h = Math.min(height[left],height[right]);
+            int b = right-left;
+            int area = h*b;
+            maxarea = Math.max(area,maxarea);
+
+            if(height[left]<height[right]){
+                left++;
+            }
+            else if(height[left]>height[right]){
+                right--;
+            }
+            else{
+                left++;
+                right--;
+            }
+        }
+        return maxarea;
+
+    }
+}
