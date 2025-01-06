@@ -1,0 +1,22 @@
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+
+FOR THIS MAP IS REQUIRED AND IF MAP CONTAINS INARRAY THEN RETURN NEW INT[]
+OTHERWISE RETURN EMPTY INT[]
+
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer,Integer> set = new HashMap<>();
+
+        for(int i=0;i<nums.length;i++){
+            int inarray = target - nums[i];
+
+            if(set.containsKey(inarray)){
+                return new int[]{set.get(inarray),i};
+            }
+            set.put(nums[i],i);
+        }
+        return new int[]{};
+    }
+}
