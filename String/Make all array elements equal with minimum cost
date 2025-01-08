@@ -1,0 +1,18 @@
+Input  : arr[] = [1, 100, 101]
+Output : 100
+
+
+class Solution{
+    public int MinCost(int arr[]){
+        //sort the array first
+        Arrays.sort(arr);
+
+        //find median
+        int median = arr[arr.length/2];
+        int totalcost = 0;
+        for(int i=0;i<arr.length;i++){
+            totalcost += Math.abs(arr[i]-median);
+        }
+        return totalcost;
+    }
+}
