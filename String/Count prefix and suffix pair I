@@ -1,0 +1,21 @@
+IN THIS WE HAVE TO COUNT SAME PREFIX AND SUFFIX THAT 
+isprefixandsuffix(str1,str2) IN THIS STR SHOUD BE AT PREFIX AND SUFFIX THEN ONLY WE COUNT IT AND RETURN COUNT
+
+class Solution {
+    public boolean isprefixandsuffix(String str1,String str2){
+        return str2.startsWith(str1) && str2.endsWith(str1);
+    }
+    public int countPrefixSuffixPairs(String[] words) {
+        int n = words.length;
+        int count = 0;
+
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                if(isprefixandsuffix(words[i],words[j])){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+}
