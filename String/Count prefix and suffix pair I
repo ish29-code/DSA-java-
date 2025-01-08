@@ -1,6 +1,8 @@
 IN THIS WE HAVE TO COUNT SAME PREFIX AND SUFFIX THAT 
 isprefixandsuffix(str1,str2) IN THIS STR SHOUD BE AT PREFIX AND SUFFIX THEN ONLY WE COUNT IT AND RETURN COUNT
 
+words = ["a","aba","ababa","aa"]
+
 class Solution {
     public boolean isprefixandsuffix(String str1,String str2){
         return str2.startsWith(str1) && str2.endsWith(str1);
