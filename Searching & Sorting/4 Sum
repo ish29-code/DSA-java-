@@ -10,7 +10,7 @@ Return Count: After all iterations, return the total count of valid quadruplets.
 Dry Run Example:
 Array: [1, 2, 3, 4, 5, 6] Target: 10
 
-Iteration 1 (i = 0):
+Iteration 1 (i = 0): i=0 to i<n-1
 Consider arr[0] = 1 as the third element.
 Inner Loop 1:
 j = 1: temp = arr[0] + arr[1] = 1 + 2 = 3. Check if target - temp = 10 - 3 = 7 is in map. Not found.
@@ -20,11 +20,11 @@ Inner Loop 2:
 No previous elements to form pairs, map remains empty.
 Iteration 2 (i = 1):
 Consider arr[1] = 2 as the third element.
-Inner Loop 1:
+Inner Loop 1: j=0 to j<n
 j = 2: temp = arr[1] + arr[2] = 2 + 3 = 5. Check if target - temp = 10 - 5 = 5 is in map. Not found.
 j = 3: temp = arr[1] + arr[3] = 2 + 4 = 6. Check if target - temp = 10 - 6 = 4 is in map. Not found.
 Continue for j = 4 to 5.
-Inner Loop 2:
+Inner Loop 2: j=0 to j<i
 j = 0: temp = arr[1] + arr[0] = 2 + 1 = 3. Store in map. map = {3: 1}.
 
 
