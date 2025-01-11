@@ -1,0 +1,38 @@
+Input: arr[] = [0, 0, 5, 5, 0, 0]
+Output: 6
+Explanation: The 6 subarrays are [0], [0], [0], [0], [0,0], and [0,0].
+
+/*class Solution {
+    public int findSubarray(int[] arr) {
+        // code here.
+        int n = arr.length;
+        int count=0;
+        for(int i=0;i<n;i++){
+            int sum = 0;
+            for(int j=i;j<n;j++){
+                sum+=arr[j];
+                if(sum==0){
+                   count++;
+                }
+            }
+        }
+        return count;
+    }
+}*/
+class Solution {
+    public int findSubarray(int[] arr) {
+          HashMap<Integer,Integer> hs=new HashMap<>();
+        int n=arr.length;
+        int ans=0;
+        int sum=0;
+       hs.put(0,1);
+        for(int i=0;i<n;i++){
+            sum+=arr[i];
+           ans += hs.getOrDefault(sum, 0);
+
+            // Update the frequency of the current sum
+            hs.put(sum, hs.getOrDefault(sum, 0) + 1);
+        }
+        return ans;
+    }
+}
