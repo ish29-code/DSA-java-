@@ -1,0 +1,22 @@
+Input: {4, 3, 2, 1}
+Output: 2
+Explanation: Swap index 0 with 3 and 1 with 2 to form the sorted array {1, 2, 3, 4}
+
+class Solution {
+    // Function to find the minimum number of swaps required to sort the array.
+    public int minSwaps(int arr[]) {
+        // Code here
+        int n = arr.length;
+        int swap=0;
+        for(int i=0;i<n;i++){
+            int j = i+1;
+            while(j<n){
+                if(arr[i]>arr[j]){
+                   swap++;
+                }
+                j++;
+            }
+        }
+        return swap;
+    }
+}
