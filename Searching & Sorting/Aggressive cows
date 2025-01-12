@@ -1,0 +1,45 @@
+Input: stalls[] = [1, 2, 4, 8, 9], k = 3
+Output: 3
+Explanation: The first cow can be placed at stalls[0], 
+the second cow can be placed at stalls[2] and 
+the third cow can be placed at stalls[3]. 
+The minimum distance between cows, in this case, is 3, which also is the largest among all possible ways.
+
+
+class Solution {
+    public static int aggressiveCows(int[] stalls, int k) {
+        Arrays.sort(stalls);
+        int low = 1;
+        int high = stalls[stalls.length - 1] - stalls[0];
+        int result = 0;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (canPlaceCows(stalls, k, mid)) {
+                result = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return result;
+    }
+
+    private static boolean canPlaceCows(int[] stalls, int k, int minDist) {
+        int count = 1;
+        int lastPlaced = stalls[0];
+
+        for (int i = 1; i < stalls.length; i++) {
+            if (stalls[i] - lastPlaced >= minDist) {
+                count++;
+                lastPlaced = stalls[i];
+                if (count == k) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+}
