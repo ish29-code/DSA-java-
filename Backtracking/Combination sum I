@@ -1,0 +1,67 @@
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+Explanation:
+2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+7 is a candidate, and 7 = 7.
+These are the only two combinations.
+
+class Solution {
+    // Function to return a list of combinations whose sum is equal to the given number.
+    static ArrayList<ArrayList<Integer>> combinationSum(ArrayList<Integer> A, int B) {
+        // Sort the array to ensure non-descending order of combinations
+        Collections.sort(A);
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        ArrayList<Integer> combination = new ArrayList<>();
+        getCombinations(A, 0, B, combination, ans);
+        return ans;
+    }
+
+    static void getCombinations(ArrayList<Integer> A, int idx, int target, ArrayList<Integer> combination, ArrayList<ArrayList<Integer>> ans) {
+        if (target == 0) {
+            ans.add(new ArrayList<>(combination));
+            return;
+        }
+        if (target < 0) {
+            return;
+        }
+
+        for (int i = idx; i < A.size(); i++) {
+            // Skip duplicates
+            if (i > idx && A.get(i).equals(A.get(i - 1))) {
+                continue;
+            }
+
+            if (A.get(i) <= target) {
+                combination.add(A.get(i));
+                // Since we can use the same number multiple times, we do not move to the next index
+                getCombinations(A, i, target - A.get(i), combination, ans);
+                combination.remove(combination.size() - 1);
+            }
+        }
+    }
+}
+OR IF int arr[]
+
+class Solution{
+    public List<List<Integer>> combinationSum(int[] candidates, int target){
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> combination = new ArrayList<>();
+        getCombinations(candidates,target,0,ans,combination);
+        return ans;
+    }
+    public void getCombinations(int candidates[],int target,int idx,List<List<Integer>>ans,List<Integer>combination){
+        if(idx==candidates.length){
+            if(target==0){
+                ans.add(new ArrayList<>(combination));
+            }
+            return;
+        }
+
+        if(candidates[idx]<=target){
+            combination.add(candidates[idx]);
+            getCombinations(candidates,target-candidates[idx],idx,ans,combination);
+            combination.remove(combination.size()-1);
+        }
+        getCombinations(candidates,target,idx+1,ans,combination);
+    }
+}
