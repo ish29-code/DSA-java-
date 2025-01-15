@@ -1,0 +1,53 @@
+permutations not by backtracking !!!
+
+
+class Solution { //time execeeds
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        int n = nums.length;
+        int totalpermutations = factorial(n);
+
+        for(int i=0;i<totalpermutations;i++){
+            List<Integer> currpermutation = new ArrayList<>();
+            for(int num : nums){
+                currpermutation.add(num);
+            }
+            result.add(currpermutation);
+            nextPermutation(nums);
+        }
+        return result;  
+    }
+    public void nextPermutation(int nums[]){
+        int n = nums.length;
+        int i = n-2;
+        while(i>=0 && nums[i]>=nums[i+1]){
+            i--;
+        }
+        if(i>=0){
+            int j = n-1;
+            while(j>=0 && nums[j]<=nums[i]){
+                j--;
+            }
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+        }
+        reverse(nums,i+1,n-1);
+    }
+    public void reverse(int nums[],int start,int end){
+        while(start<end){
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
+        }
+    }
+    public int factorial(int n){
+        if(n==0){
+            return 1;
+        }
+        return n*factorial(n-1);
+    }
+}
