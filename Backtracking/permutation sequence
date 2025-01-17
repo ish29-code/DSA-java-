@@ -1,0 +1,30 @@
+Inp : n = 3, k = 3
+Output: "213"
+
+
+class Solution { //o(n)
+    public String getPermutation(int n, int k) {
+        //this is for add sequence [1,2,3]
+        List<Integer> sequence = new ArrayList<>();
+        for(int i=1;i<=n;i++){
+            sequence.add(i); //---->[1,2,3] because n = 3
+        }
+        k--;//k=k-1 ----> k=2
+
+        StringBuilder sb = new StringBuilder(); //to store the removed value which is a part of ans
+        int fact = 1;
+        for(int i=1;i<n;i++){
+            fact *= i; //finding factorial ----> in this for first fact = 2
+        }
+
+        for(int i=n;i>0;i--){
+            int idx = k/fact; //----> idx=2/2---> 1 so in 1 idx there is 2
+            sb.append(sequence.remove(idx));//----> append 2 in sb string [2]
+            k %= fact; // then ---> update k ---> k=2%2--->0
+            if(i>1){
+                fact /= (i-1); //i>1 here then update fact is---->fact=2/2--->1
+            }
+        }
+        return sb.toString();// second itteration with fact=1,k=0
+    }
+}
