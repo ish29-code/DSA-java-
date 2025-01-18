@@ -1,0 +1,151 @@
+IT WILL SOLVE BY THESE POINTS
+1) Firstly make a function of crossword then pass list of words string then in this function we have to convert that list of string into (char) of crossword grid[n][m].
+2) in each row of word string for ex---> "puzzel" into crossword.get(i).toCharArray();---->[p,u,z,z,e,l] like this so that we can itterate for each word
+3) Then string wordlist to split in array that do not count (;) this and add that word in grid if solve function is true. otherwise return original grid.
+4) then in Solve function check if index==word.length then return true--->that all word are placed. otherwise (String word = words[index])---> for checking for each single word.
+5) Then calling canplacehorizontal function if true--->that means we can place the word then create another backup[][] for restoring for futre pdate and agai call Solve function for next word.AND SAME FOR VERTICAL ALSO.
+6) Then in canplacehorizontal we check (col+word.length()>grid[0].length)then false , and also check (grid[row][col+i] != '-' && grid[row][col+i] != word.charAt(i))--->this means then next element is not '-' its '+' and we cannot place here and the word is not there that of starting index.SAME FOR VERTICAL
+7) in placehorizontally we will call backup if we cannt place the word then only same for placevertically.
+8) Here the function for copy grid. In a newgrid arr.
+9) Then the function for restore backups where the function arrayCopy.
+
+import java.io.*;
+import java.util.*;
+
+class Result {
+
+    public static List<String> crosswordPuzzle(List<String> crossword, String words) {
+        int n = crossword.size();
+        int m = crossword.get(0).length();
+        char[][] grid = new char[n][m];
+
+        // Convert list of strings to a grid of characters
+        for (int i = 0; i < n; i++) {
+            grid[i] = crossword.get(i).toCharArray();
+        }
+
+        String[] wordList = words.split(";");
+        // Try to solve the puzzle with backtracking
+        if (solve(grid, wordList, 0)) {
+            List<String> result = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                result.add(new String(grid[i]));
+            }
+            return result;
+        } else {
+            // If no solution found, return original crossword
+            return crossword;
+        }
+    }
+
+    private static boolean solve(char[][] grid, String[] words, int index) {
+        if (index == words.length) {
+            return true; // All words are placed
+        }
+
+        String word = words[index];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (canPlaceHorizontally(grid, word, i, j)) {
+                    char[][] backup = placeWordHorizontally(grid, word, i, j);
+                    if (solve(grid, words, index + 1)) {
+                        return true;
+                    }
+                    restoreGrid(grid, backup);
+                }
+                if (canPlaceVertically(grid, word, i, j)) {
+                    char[][] backup = placeWordVertically(grid, word, i, j);
+                    if (solve(grid, words, index + 1)) {
+                        return true;
+                    }
+                    restoreGrid(grid, backup);
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean canPlaceHorizontally(char[][] grid, String word, int row, int col) {
+        if (col + word.length() > grid[0].length) {
+            return false; // Word does not fit
+        }
+        for (int i = 0; i < word.length(); i++) {
+            if (grid[row][col + i] != '-' && grid[row][col + i] != word.charAt(i)) {
+                return false; // Clash with existing letters
+            }
+        }
+        return true;
+    }
+
+    private static boolean canPlaceVertically(char[][] grid, String word, int row, int col) {
+        if (row + word.length() > grid.length) {
+            return false; // Word does not fit
+        }
+        for (int i = 0; i < word.length(); i++) {
+            if (grid[row + i][col] != '-' && grid[row + i][col] != word.charAt(i)) {
+                return false; // Clash with existing letters
+            }
+        }
+        return true;
+    }
+
+    private static char[][] placeWordHorizontally(char[][] grid, String word, int row, int col) {
+        char[][] backup = copyGrid(grid);
+        for (int i = 0; i < word.length(); i++) {
+            grid[row][col + i] = word.charAt(i);
+        }
+        return backup;
+    }
+
+    private static char[][] placeWordVertically(char[][] grid, String word, int row, int col) {
+        char[][] backup = copyGrid(grid);
+        for (int i = 0; i < word.length(); i++) {
+            grid[row + i][col] = word.charAt(i);
+        }
+        return backup;
+    }
+
+    private static char[][] copyGrid(char[][] grid) {
+        char[][] newGrid = new char[grid.length][];
+        for (int i = 0; i < grid.length; i++) {
+            newGrid[i] = grid[i].clone();
+        }
+        return newGrid;
+    }
+
+    private static void restoreGrid(char[][] grid, char[][] backup) {
+        for (int i = 0; i < grid.length; i++) {
+            System.arraycopy(backup[i], 0, grid[i], 0, grid[0].length);
+        }
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        List<String> crossword = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            String crosswordItem = bufferedReader.readLine();
+            crossword.add(crosswordItem);
+        }
+
+        String words = bufferedReader.readLine();
+
+        List<String> result = Result.crosswordPuzzle(crossword, words);
+
+        for (int i = 0; i < result.size(); i++) {
+            bufferedWriter.write(result.get(i));
+
+            if (i != result.size() - 1) {
+                bufferedWriter.write("\n");
+            }
+        }
+
+        bufferedWriter.newLine();
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
