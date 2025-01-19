@@ -1,0 +1,84 @@
+/*public class Solution {
+    public int longestIncreasingPath(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int maxpath = 0;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                boolean[][] visited = new boolean[m][n];
+                maxpath = Math.max(maxpath, backtrack(matrix, i, j, visited));
+            }
+        }
+        return maxpath;
+    }
+
+    public boolean isvalid(int[][] matrix, int row, int col, boolean[][] visited) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        return row >= 0 && row < m && col >= 0 && col < n && !visited[row][col];
+    }
+
+    public int backtrack(int[][] matrix, int row, int col, boolean[][] visited) {
+        if (!isvalid(matrix, row, col, visited)) {
+            return 0;
+        }
+
+        visited[row][col] = true;
+        int maxpath = 1;
+
+        if (row + 1 < matrix.length && matrix[row + 1][col] > matrix[row][col]) {
+            maxpath = Math.max(maxpath, 1 + backtrack(matrix, row + 1, col, visited));
+        }
+        if (row - 1 >= 0 && matrix[row - 1][col] > matrix[row][col]) {
+            maxpath = Math.max(maxpath, 1 + backtrack(matrix, row - 1, col, visited));
+        }
+        if (col + 1 < matrix[0].length && matrix[row][col + 1] > matrix[row][col]) {
+            maxpath = Math.max(maxpath, 1 + backtrack(matrix, row, col + 1, visited));
+        }
+        if (col - 1 >= 0 && matrix[row][col - 1] > matrix[row][col]) {
+            maxpath = Math.max(maxpath, 1 + backtrack(matrix, row, col - 1, visited));
+        }
+
+        visited[row][col] = false;
+        return maxpath;
+    }
+}*/
+
+public class Solution {
+    private static final int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public int longestIncreasingPath(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] memo = new int[m][n];
+        int maxpath = 0;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                maxpath = Math.max(maxpath, backtrack(matrix, i, j, memo));
+            }
+        }
+        return maxpath;
+    }
+
+    private int backtrack(int[][] matrix, int row, int col, int[][] memo) {
+        if (memo[row][col] != 0) {
+            return memo[row][col];
+        }
+
+        int maxpath = 1;
+        for (int[] direction : directions) {
+            int newRow = row + direction[0];
+            int newCol = col + direction[1];
+            if (newRow >= 0 && newRow < matrix.length && newCol >= 0 && newCol < matrix[0].length
+                    && matrix[newRow][newCol] > matrix[row][col]) {
+                maxpath = Math.max(maxpath, 1 + backtrack(matrix, newRow, newCol, memo));
+            }
+        }
+
+        memo[row][col] = maxpath;
+        return maxpath;
+    }
+}
+
