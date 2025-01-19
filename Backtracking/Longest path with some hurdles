@@ -1,0 +1,50 @@
+{xs,ys} = {0,0}
+{xd,yd} = {1,7}
+matrix = 1 1 1 1 1 1 1 1 1 1
+         1 1 0 1 1 0 1 1 0 1
+         1 1 1 1 1 1 1 1 1 1
+
+
+
+
+class Solution {
+    public static int longestPath(int[][] mat, int n, int m, int xs, int ys, int xd, int yd) {
+        m = mat.length;
+        n = mat[0].length;
+        boolean[][] visited = new boolean[m][n];
+        
+        if (mat[xs][ys] == 0 || mat[xd][yd] == 0) {
+            return -1; // If the start or end position is a hurdle, return -1
+        }
+        
+        int result = backtrack(mat, xd, yd, xs, ys, visited);
+        
+        return result == Integer.MIN_VALUE ? -1 : result;
+    }
+    
+    public static boolean isfind(int[][] mat, int row, int col, boolean[][] visited) {
+        int m = mat.length;
+        int n = mat[0].length;
+        return row >= 0 && row < m && col >= 0 && col < n && mat[row][col] == 1 && !visited[row][col];
+    }
+    
+    public static int backtrack(int[][] mat, int xd, int yd, int row, int col, boolean[][] visited) {
+        if (row == xd && col == yd) {
+            return 0;
+        }
+        
+        if (isfind(mat, row, col, visited)) {
+            visited[row][col] = true;
+            
+            int maxpath = Integer.MIN_VALUE;
+            maxpath = Math.max(maxpath, 1 + backtrack(mat, xd, yd, row + 1, col, visited));
+            maxpath = Math.max(maxpath, 1 + backtrack(mat, xd, yd, row - 1, col, visited));
+            maxpath = Math.max(maxpath, 1 + backtrack(mat, xd, yd, row, col + 1, visited));
+            maxpath = Math.max(maxpath, 1 + backtrack(mat, xd, yd, row, col - 1, visited));
+            
+            visited[row][col] = false;
+            return maxpath;
+        }
+        return Integer.MIN_VALUE;
+    }
+}
