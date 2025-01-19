@@ -41,6 +41,11 @@ class Solution {
             maxpath = Math.max(maxpath, 1 + backtrack(mat, xd, yd, row - 1, col, visited));
             maxpath = Math.max(maxpath, 1 + backtrack(mat, xd, yd, row, col + 1, visited));
             maxpath = Math.max(maxpath, 1 + backtrack(mat, xd, yd, row, col - 1, visited));
+
+           //THIS IS ALSO TURE IF WE WANT TO REMOVE 1+BACKTRACK(.....) ITS JUST TO INCREMENT IF VALID PATH IS FOUND......
+           if (maxpath != Integer.MIN_VALUE) { 
+                     maxpath++; 
+             }
             
             visited[row][col] = false;
             return maxpath;
