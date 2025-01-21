@@ -1,0 +1,63 @@
+IN THIS FIRSTLY WE HAVE TO INITILLIZE THE ISSAFE FUNCTION FOR VERTICALLY HORIZONTALLY DIAGONAL LEFT DIAGONALRIGHT TO CHECK IF THESE CONDITIONS ARE FALSE THEN ONLY WE CAN BACKTRACK
+AND IF TURETHEN JUST PRINT
+
+
+class Solution {
+    public boolean isSafe(char[][] board,int row,int col,int n){
+        //horizontally
+        for(int j=0;j<n;j++){
+            if(board[row][j]=='Q'){
+                return false;
+            }
+        }
+        //vertically
+        for(int i=0;i<n;i++){
+            if(board[i][col]=='Q'){
+                return false;
+            }
+        }
+        //diagonally left Q\
+        for(int i=row,j=col;i>=0 && j>=0;i--,j--){
+            if(board[i][j]=='Q'){
+                return false;
+            }
+        }
+        //diagonally right /Q
+        for(int i=row,j=col;i>=0 && j<n;i--,j++){
+            if(board[i][j]=='Q'){
+                return false;
+            }
+        }
+        return true;
+    }
+    public void solveQueen(char board[][],int row,int n,List<List<String>> ans){
+        if(row==n){
+            ans.add(construct(board));
+            return;
+        }
+        for(int j=0;j<n;j++){
+            if(isSafe(board,row,j,n)){
+                board[row][j] = 'Q';
+                solveQueen(board,row+1,n,ans);
+                board[row][j] = '.';
+            }
+        }
+
+    }
+    public List<String> construct(char board[][]){
+        List<String> res = new ArrayList<>();
+        for(int i=0;i<board.length;i++){
+            res.add(new String(board[i]));
+        }
+        return res;
+    }
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> ans = new ArrayList<>();
+        char board[][] = new char[n][n];
+        for(int i=0;i<n;i++){
+            Arrays.fill(board[i],'.');
+        }
+        solveQueen(board,0,n,ans);
+        return ans;
+    }
+}
