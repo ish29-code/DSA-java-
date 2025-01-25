@@ -1,0 +1,43 @@
+Input: v = 4, edges[] = [(0,1),(1,2),(2,3),(3,0),(0,2)], m = 3
+Output: true
+Explanation: It is possible to color the given graph using 3 colors, for example, one of the possible ways vertices can be colored as follows:
+Vertex 0: Color 3
+Vertex 1: Color 2
+Vertex 2: Color 1
+Vertex 3: Color 2
+
+
+
+class Solution {
+    boolean issafe(int node,int color,int colors[],List<int[]> edges){
+        for(int edge[] : edges){
+            if(edge[0]==node && colors[edge[1]]==color){
+                return false;
+            }
+            if(edge[1]==node && colors[edge[0]]==color){
+                return false;
+            }
+        }
+        return true;
+    }
+    boolean dfs(int node,int v,int m,int colors[],List<int[]> edges){
+        if(node==v){
+            return true;
+        }
+        for(int color=1;color<=m;color++){
+            if(issafe(node,color,colors,edges)){
+                colors[node]=color;
+                if(dfs(node+1,v,m,colors,edges)){
+                    return true;
+                }
+                colors[node]=0;
+            }
+        }
+        return false;
+    }
+    boolean graphColoring(int v, List<int[]> edges, int m) {
+        // code here
+        int colors[] = new int[v];
+        return dfs(0,v,m,colors,edges);
+    }
+}
