@@ -6,7 +6,59 @@
 DDRDRR
 DRDDRR
 
-
+class Solution {
+    // Function to find all possible paths
+    public ArrayList<String> findPath(ArrayList<ArrayList<Integer>> mat) {
+        // code here
+        ArrayList<String> paths = new ArrayList<>(); //adding that single single which is in stringbuilder in paths arrauylist
+        if(mat==null || mat.size()==0 || mat.get(0).size()==0){
+            return paths;
+        }
+        StringBuilder path = new StringBuilder();//singile single letter of sting 
+        boolean visited[][] = new boolean[mat.size()][mat.get(0).size()];
+        
+        dfs(mat,0,0,visited,path,paths);
+        return paths;
+    }
+    public void dfs(ArrayList<ArrayList<Integer>> mat,int row,int col,boolean visited[][],StringBuilder path,ArrayList<String> paths){
+        int m = mat.size();
+        int n = mat.get(0).size();
+        
+        if(row<0 || col<0 || row>=m || col >=n || mat.get(row).get(col)==0 || visited[row][col]){
+            return;
+        }
+        
+        if(row==m-1 && col==n-1){
+            paths.add(path.toString());
+            return;
+        }
+        
+        visited[row][col]=true;
+        //sorted is d,l,r,u
+        
+        //down 
+        path.append('D');
+        dfs(mat,row+1,col,visited,path,paths);
+        path.deleteCharAt(path.length()-1);
+        
+        //left
+        path.append('L');
+        dfs(mat,row,col-1,visited,path,paths);
+        path.deleteCharAt(path.length()-1);
+        
+        //right
+        path.append('R');
+        dfs(mat,row,col+1,visited,path,paths);
+        path.deleteCharAt(path.length()-1);
+        
+        //up
+        path.append('U');
+        dfs(mat,row-1,col,visited,path,paths);
+        path.deleteCharAt(path.length()-1);
+        
+        visited[row][col]=false;
+    }
+}
 
 
 import java.util.*;
