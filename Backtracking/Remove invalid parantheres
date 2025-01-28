@@ -1,0 +1,67 @@
+BASICALLY IN THIS WE HAVE TO MAKE A RESULT ARRAY TO STORE THE ANSS
+THEN A QUEUE TO ADD ALL POSSIBLE PARANTHESES 
+AND A VISITED SET TO SEE THERE IS NO DUPLICATE
+THEN AFTER SEEING THAT IT FOLLOWS THE ISVALID CONDITION THEN JUST ADD IN RESULT AND RETURN IT
+AND IF NOT THEN CONTINUE AND REMOVE WHAT IT MAKES NONVALID 
+BY USING SUBSTRING ONE BY ONE REMOVING AND SEE IF IT IS VALID OR NOT BY ADDING IN QUEUE AND ALSO CHECK IF IT IS NOT VISITED
+
+
+Input: s = "()())()"
+Output: ["(())()","()()()"]
+
+class Solution {//o(2^n*N)
+    public List<String> removeInvalidParentheses(String s) {
+        //result to store the  ans
+        List<String> result = new ArrayList<>();
+        if(s==null){
+            return result;
+        }
+
+        Set<String> visited = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+
+        queue.add(s);
+        visited.add(s);
+        boolean found = false;
+
+        while(!queue.isEmpty()){
+            String current = queue.poll();
+            if(isvalid(current)){
+                result.add(current);
+                found=true;
+            }
+            if(found){
+                continue;
+            }
+
+            for(int i=0;i<current.length();i++){
+                if(current.charAt(i)!='(' && current.charAt(i)!=')'){
+                    continue;
+                }
+                String next = current.substring(0,i)+current.substring(i+1);
+                if(!visited.contains(next)){
+                    queue.add(next);
+                    visited.add(next);
+                }
+            }
+        }
+        Collections.sort(result);
+        return result;
+    }
+    public boolean isvalid(String s){
+        int cnt=0;
+        for(char c : s.toCharArray()){
+            if(c=='('){
+                cnt++;
+            }
+            else if(c==')'){
+                cnt--;
+
+                if(cnt<0){
+                    return false;
+                }
+            }
+        }
+        return cnt==0;
+    }
+}
