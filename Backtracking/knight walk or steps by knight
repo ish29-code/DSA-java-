@@ -1,0 +1,52 @@
+N=6
+knightPos[ ] = [4, 5]
+targetPos[ ] = [1, 1]
+Output:
+3
+Explanation:
+
+Knight takes 3 step to reach from 
+(4, 5) to (1, 1):
+(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).
+
+
+
+
+
+class Solution
+{
+    //Function to find out minimum steps Knight needs to reach target position.
+    public static int dx[] = {2,2,-2,-2,1,1,-1,-1};
+    public static int dy[] = {1,-1,1,-1,2,-2,2,-2};
+    public int minStepToReachTarget(int KnightPos[], int TargetPos[], int N)
+    {
+        // Code here
+        boolean visited[][] = new boolean[N][N];
+        Queue<int[]> queue = new LinkedList<>();
+        
+        queue.add(new int[]{KnightPos[0]-1,KnightPos[1]-1,0});//(3,4,0)
+        visited[KnightPos[0]-1][KnightPos[1]-1] = true;
+        
+        while(!queue.isEmpty()){
+            int pos[] = queue.poll();//(3,4,0)
+            int x = pos[0];//3
+            int y = pos[1];//4
+            int dist = pos[2];//0
+            
+            if(x==TargetPos[0]-1 && y==TargetPos[1]-1){//not
+                return dist;
+            }
+            for(int i=0;i<8;i++){
+                int nx = x+dx[i];// 3+2--->5
+                int ny = y+dy[i];// 4+1---->5
+            
+                if(nx>=0 && nx<N && ny>=0 && ny<N && !visited[nx][ny]){
+                    visited[nx][ny]=true;
+                    queue.add(new int[]{nx,ny,dist+1});//(5,5,0)
+                }
+            }
+        }
+        
+        return -1;
+    }
+}
