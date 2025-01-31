@@ -1,0 +1,43 @@
+Input: s = "catsanddog", dict = ["cats", "cat", "and", "sand", "dog"]
+Output: (cats and dog)(cat sand dog)
+Explanation: All the words in the given sentences are present in the dictionary.
+
+
+
+
+class Solution {
+    static void helper(String s,HashSet<String> distset,String curr,List<String> res,int start){
+        if(start==s.length()){//when it goes to till the end that means all compelete the  just return
+            res.add(curr);
+            return;
+        }
+        
+        for(int end=start+1;end<=s.length();end++){ //end and start for finding substring which matches with the array or not
+            String word = s.substring(start,end);//(0,3)--->cat matchig 
+            
+            if(distset.contains(word)){ //"cat" == cat
+                String prev = curr; //prev=" "
+                
+                //append the word
+                if(!curr.isEmpty()){// intitially curr is empty skip this
+                    curr += " ";
+                }
+                curr += word;//curr = 'cat'
+                
+                helper(s,distset,curr,res,end);// call for another
+                
+                curr=prev;//backtrack
+            }
+        }
+    }
+    static List<String> wordBreak(String[] dict, String s) {
+        // code here
+        HashSet<String> distset = new HashSet<String>(Arrays.asList(dict));
+        
+        List<String> res = new ArrayList<>();
+        String curr ="";
+        
+        helper(s,distset,curr,res,0);//for starting
+        return res;
+    }
+}
