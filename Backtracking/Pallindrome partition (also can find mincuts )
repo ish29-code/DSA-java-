@@ -1,0 +1,36 @@
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+
+
+class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> res = new ArrayList<>();
+        List<String> currlist = new ArrayList<>();
+        findPallindrome(s,0,currlist,res);
+        return res;
+    }
+    public void findPallindrome(String s,int start,List<String> currlist,List<List<String>> res){
+        if(start==s.length()){
+            res.add(new ArrayList<>(currlist));
+            return;
+        }
+
+        for(int end=start;end<s.length();end++){
+            if(isPallindrome(s,start,end)){
+                currlist.add(s.substring(start,end+1));
+                findPallindrome(s,end+1,currlist,res);
+                currlist.remove(currlist.size()-1);
+            }
+        }
+    }
+    public boolean isPallindrome(String s,int left,int right){
+        while(left<right){
+            if(s.charAt(left)!=s.charAt(right)){
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
