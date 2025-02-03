@@ -1,0 +1,48 @@
+Input: arr[] = [2, 1, 4, 5, 6], k = 3
+Output: true
+Explanation: We can divide above array into 3 parts with equal sum as (2, 4), (1, 5), (6)
+
+
+class Solution {
+    public boolean isKPartitionPossible(int[] arr, int k) {
+        // Your code here
+        int n = arr.length;
+        int sum =0;
+        
+        //finding total sum
+        for(int i=0;i<n;i++){
+            sum+=arr[i];
+        }
+        //finding if the sum is divisible by k or not
+        if(sum%k!=0){ //to see that 18/3-->6 so there are 3 subset with sum--->6
+            return false;
+        }
+        
+        int target = sum/k;
+        boolean visited[] = new boolean[n];
+        
+        return backtrack(arr,visited,0,k,0,target);//(arr,visited,0,3,0,6)
+    }
+    public boolean backtrack(int arr[],boolean visited[],int startidx,int remainingsubset,int currsubsetsum,int targetsum){
+        if(remainingsubset==1){//just 1
+            return true;
+        }
+        
+        //if the currsubsetsum is equals to the target sum then ,vheck for remaining
+        if(currsubsetsum == targetsum){
+            return backtrack(arr,visited,0,remainingsubset-1,0,targetsum);
+        }
+        
+        for(int i=startidx;i<arr.length;i++){
+            if(!visited[i] && currsubsetsum + arr[i]<=targetsum){
+                visited[i] = true;
+                if(backtrack(arr,visited,i+1,remainingsubset,currsubsetsum+arr[i],targetsum)){
+                    return true;
+                }
+                visited[i] = false;//backtrack
+            }
+            
+        }
+        return false;
+    }
+}
