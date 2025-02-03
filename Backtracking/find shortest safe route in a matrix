@@ -1,0 +1,84 @@
+Input:
+mat = [1, 0, 1, 1, 1],
+      [1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 1],
+      [1, 1, 1, 1, 0]
+Output: 
+6
+Explanation: 
+We can see that length of shortest
+safe route is 6
+[1 0 1 1 1]
+[1 1 1 1 1]
+[1 1 1 1 1]
+[1 1 1 0 1] 
+[1 1 1 1 0]
+
+
+class Solution {
+    public int findShortestPath(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        
+        // Mark cells around landmines as -1
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 0) {
+                    if (i - 1 >= 0 && mat[i - 1][j] != 0) mat[i - 1][j] = -1; // up
+                    if (i + 1 < m && mat[i + 1][j] != 0) mat[i + 1][j] = -1; // down
+                    if (j - 1 >= 0 && mat[i][j - 1] != 0) mat[i][j - 1] = -1; // left
+                    if (j + 1 < n && mat[i][j + 1] != 0) mat[i][j + 1] = -1; // right
+                }
+            }
+        }
+
+        int[][] dp = new int[m][n];
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+        
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < m; i++) {
+            if (mat[i][0] == 1) { // Start only from cells that are not landmines or invalid
+                min = Math.min(min, recurse(mat, i, 0, dp));
+            }
+        }
+        return min == Integer.MAX_VALUE ? -1 : min;
+    }
+
+    static int recurse(int[][] mat, int i, int j, int[][] dp) {
+        int m = mat.length;
+        int n = mat[0].length;
+
+        // If out of bounds or landmine or invalid cell
+        if (i < 0 || i >= m || j < 0 || j >= n || mat[i][j] == 0 || mat[i][j] == -1) {
+            return Integer.MAX_VALUE;
+        }
+
+        // If reached the last column
+        if (j == n - 1) {
+            return dp[i][j] = 1;
+        }
+
+        // If already calculated, return the value
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+
+        dp[i][j] = Integer.MAX_VALUE;
+        int min = Integer.MAX_VALUE;
+
+        // Recurse in all four possible directions
+        min = Math.min(min, recurse(mat, i + 1, j, dp)); // down
+        min = Math.min(min, recurse(mat, i - 1, j, dp)); // up
+        min = Math.min(min, recurse(mat, i, j - 1, dp)); // left
+        min = Math.min(min, recurse(mat, i, j + 1, dp)); // right
+
+        dp[i][j] = min;
+        if (min != Integer.MAX_VALUE) {
+            return dp[i][j] = min + 1;
+        }
+        return dp[i][j];
+    }
+}
