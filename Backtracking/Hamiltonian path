@@ -1,0 +1,53 @@
+Input:
+N = 4, M = 4
+Edges[][]= { {1,2}, {2,3}, {3,4}, {2,4} }
+Output:
+1 
+Explanation: 
+There is a hamiltonian path: 
+1 -> 2 -> 3 -> 4 
+
+
+class Solution 
+{ 
+    boolean check(int N, int M, ArrayList<ArrayList<Integer>> Edges) 
+    {
+        // code here
+        List<List<Integer>> adjlist = new ArrayList<>();
+        for(int i=0;i<=N;i++){
+            adjlist.add(new ArrayList<>());
+        }
+        
+        for(ArrayList<Integer> edge : Edges){
+            adjlist.get(edge.get(0)).add(edge.get(1));
+            adjlist.get(edge.get(1)).add(edge.get(0));
+        }
+        
+        boolean visited[] = new boolean[N+1];
+        
+        for(int i=1;i<=N;i++){
+            if(findhamiltonpath(i,visited,adjlist,1,N)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    boolean findhamiltonpath(int node,boolean[]visited,List<List<Integer>> adjlist,int count,int N){
+        visited[node] = true;
+        
+        if(count==N){
+            return true;
+        }
+        
+        for(int neighbour : adjlist.get(node)){
+            if(!visited[neighbour]){
+                if(findhamiltonpath(neighbour,visited,adjlist,count+1,N)){
+                    return true;
+                }
+            }
+        }
+        visited[node] = false;
+        return false;
+    }
+} 
