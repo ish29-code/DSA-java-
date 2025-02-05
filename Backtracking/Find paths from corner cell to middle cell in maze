@@ -1,0 +1,90 @@
+Input:  9 x 9 maze
+[ 3, 5, 4, 4, 7, 3, 4, 6, 3 ]
+[ 6, 7, 5, 6, 6, 2, 6, 6, 2 ]
+[ 3, 3, 4, 3, 2, 5, 4, 7, 2 ]
+[ 6, 5, 5, 1, 2, 3, 6, 5, 6 ]
+[ 3, 3, 4, 3, 0, 1, 4, 3, 4 ]
+[ 3, 5, 4, 3, 2, 2, 3, 3, 5 ]
+[ 3, 5, 4, 3, 2, 6, 4, 4, 3 ]
+[ 3, 5, 1, 3, 7, 5, 3, 6, 4 ]
+[ 6, 2, 4, 3, 4, 5, 4, 5, 1 ]
+
+Output:
+(0, 0) -> (0, 3) -> (0, 7) -> 
+(6, 7) -> (6, 3) -> (3, 3) -> 
+(3, 4) -> (5, 4) -> (5, 2) -> 
+(1, 2) -> (1, 7) -> (7, 7) ->
+(7, 1) -> (2, 1) -> (2, 4) -> 
+(4, 4) -> MID
+
+
+
+public class MazeSolver {
+    public static int N;
+
+    public static boolean isSafe(int maze[][], int x, int y) {
+        return (x >= 0 && x < N && y >= 0 && y < N && maze[x][y] != 0);
+    }
+
+    public static boolean solveMaze(int maze[][]) {
+        int solution[][] = new int[N][N];
+
+        if (!solveMazeUtil(maze, 0, 0, solution)) {
+            System.out.println("No solution found");
+            return false;
+        }
+        
+        printSolution(solution);
+        return true;
+    }
+
+    public static boolean solveMazeUtil(int maze[][], int x, int y, int solution[][]) {
+        int middleX = N / 2;
+        int middleY = N / 2;
+
+        if (x == middleX && y == middleY) {
+            solution[x][y] = 1;
+            return true;
+        }
+
+        if (isSafe(maze, x, y)) {
+            solution[x][y] = 1;
+
+            if (solveMazeUtil(maze, x + maze[x][y], y, solution)) return true;
+            if (solveMazeUtil(maze, x - maze[x][y], y, solution)) return true;
+            if (solveMazeUtil(maze, x, y + maze[x][y], solution)) return true;
+            if (solveMazeUtil(maze, x, y - maze[x][y], solution)) return true;
+
+            solution[x][y] = 0;
+            return false;
+        }
+
+        return false;
+    }
+
+    public static void printSolution(int solution[][]) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(" " + solution[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String args[]) {
+        int maze[][] = {
+            {3, 5, 4, 4, 7, 3, 4, 6, 3},
+            {6, 7, 5, 6, 6, 2, 6, 6, 2},
+            {3, 3, 4, 3, 2, 5, 4, 7, 2},
+            {6, 5, 5, 1, 2, 3, 6, 5, 6},
+            {3, 3, 4, 3, 0, 1, 4, 3, 4},
+            {3, 5, 4, 3, 2, 2, 3, 3, 5},
+            {3, 5, 4, 3, 2, 6, 4, 4, 3},
+            {3, 5, 1, 3, 7, 5, 3, 6, 4},
+            {6, 2, 4, 3, 4, 5, 4, 5, 1}
+        };
+
+        N = maze.length;
+        solveMaze(maze);
+    }
+}
