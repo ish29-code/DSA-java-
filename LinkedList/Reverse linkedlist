@@ -1,0 +1,25 @@
+Input: head: 1 -> 2 -> 3 -> 4 -> NULL
+Output: head: 4 -> 3 -> 2 -> 1 -> NULL
+
+
+
+class Solution {
+    Node reverseList(Node head) { //Previous: 2 -> 1 -> null
+                                  //Current:   3 -> 4 -> 5
+                                  //Next:      4 -> 5
+
+        // code here
+        Node curr = head;
+        Node prev = null;
+        Node next;
+        
+        while(curr!=null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+            
+        }
+        return prev;
+    }
+}
