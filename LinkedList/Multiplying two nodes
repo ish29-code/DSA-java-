@@ -1,0 +1,25 @@
+Input : head1 : 1->0->0 , head2 : 1->0
+Output: 1000
+Explanation: head1 represents 100 and head2 represents the number 10, 100 x 10 = 1000
+
+
+class Solution {
+    public long multiplyTwoLists(Node first, Node second) {
+        // Code here
+        long num1=0,num2=0;
+        long mod = 1000000007;
+        
+        //traversing first node
+        while(first!=null){
+            num1 = (num1*10+first.data)%mod;
+            first=first.next;
+        }
+        
+        //traversing second node
+        while(second!=null){
+            num2 = (num2*10+second.data)%mod;
+            second=second.next;
+        }
+        return (num1*num2)%mod;
+    }
+}
