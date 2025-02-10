@@ -1,0 +1,71 @@
+Input: head = 1 -> 3 -> 4, pos = 2
+Output: true
+Explanation: The linked list looks like
+A loop is present in the list, and it is removed.
+
+
+
+class Solution {
+    // Function to remove a loop in the linked list.
+    public static Node flodsDetect(Node head){
+        if(head==null){
+            return null;
+        }
+        Node slow = head;
+        Node fast = head;
+        int pos = 0;
+        
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            
+            if(slow==fast){
+                //loop existes
+                return slow;
+                
+            }
+        }
+        return null;
+    }
+    
+    //point where the slow and fast interset that is the intersectiuon
+    public static Node getStartPoint(Node head){
+        if(head==null){
+            return head;
+        }
+        
+        Node intersection = flodsDetect(head);
+        if (intersection == null) {
+            return null;
+        }
+        Node slow = head;
+        
+        while(slow!=intersection){
+            slow=slow.next;
+            intersection=intersection.next;
+        }
+        
+        return slow;
+    }
+    
+    //1->2->3->null remove the loop(break)
+    public static void removeLoop(Node head) {
+        // code here
+        
+        if(head==null){
+            return;
+        }
+        
+        Node startPoint = getStartPoint(head);
+        if (startPoint == null) {
+            return;
+        }
+        Node temp = startPoint;
+        
+        while(temp.next != startPoint){
+            temp=temp.next;
+        }
+        temp.next = null;
+    }
+    
+}
