@@ -1,0 +1,21 @@
+head1 : 4 -> 1 -> 8 -> 4 -> 5, head2 : 5 -> 6 -> 1 -> 8 -> 4 -> 5
+ 
+Output: 8
+Explanation: From the above image, it is clearly seen that the common part is 8 -> 4 -> 5 whose starting point is 8.
+
+
+
+class Intersect {
+    // Function to find intersection point in Y shaped Linked Lists.
+    static Node intersectPoint(Node head1, Node head2) {
+        // code here
+        Node l1 = head1;
+        Node l2 = head2;
+        
+        while(l1!=l2){
+            l1 = (l1==null) ? head2 : l1.next;//this means if not at end then triversing if ended then go to next list and check
+            l2 = (l2==null) ? head1 : l2.next;//this means if not at end then triversing if ended then go to next list and check
+        }
+        return l1;
+    }
+}
