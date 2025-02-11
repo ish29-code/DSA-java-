@@ -1,0 +1,43 @@
+Input: LinkedList: 11->15->20->5->10
+Output: true
+Explanation: 
+
+In the given linked list, after arranging them as 11 < 20 > 5 < 15 > 10 in the pattern as asked above.
+
+
+
+class Solution {
+    Node zigZag(Node head) {
+        // add code here.
+        if(head==null || head.next==null){
+            return head;
+        }
+        
+        Node curr = head;
+        boolean flag = true;
+        
+        while(curr.next!=null){
+            if(flag){
+                if(curr.data > curr.next.data){
+                    //swap 
+                    int swap = curr.data;
+                    curr.data = curr.next.data;
+                    curr.next.data = swap;
+                }
+            }
+            else{
+                if(curr.data < curr.next.data){
+                    //swap 
+                    int swap = curr.data;
+                    curr.data = curr.next.data;
+                    curr.next.data = swap;
+                }
+            }
+            //flip
+            flag=!flag;
+            //go to next
+            curr=curr.next;
+        }
+        return head;
+    }
+}
