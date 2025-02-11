@@ -1,0 +1,32 @@
+Input: LinkedList: 3->5->2->4->1
+Output: 1->2->3->4->5
+Explanation: After sorting the given linked list, the resultant matrix will be 1->2->3->4->5.
+
+
+class Solution {
+    // Function to sort the given linked list using Merge Sort.
+    static Node mergeSort(Node head) {
+        // add your code here
+        Node curr = head;
+        
+        //put all nodes in list so that we can sort it
+        ArrayList<Integer> li = new ArrayList<>();
+        while(curr!=null){
+            li.add(curr.data);
+            curr=curr.next;
+        }
+        
+        //sort
+        Collections.sort(li);
+        
+        
+        //reassing 
+        curr=head;
+        int i =0;
+        while(curr!=null){
+            curr.data = li.get(i++);
+            curr=curr.next;
+        }
+        return head;
+    }
+}
