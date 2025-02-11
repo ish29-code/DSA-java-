@@ -1,0 +1,54 @@
+Input:
+5 -> 10 -> 19 -> 28
+|     |     |     | 
+7     20    22   35
+|           |     | 
+8          50    40
+|                 | 
+30               45
+Output:  5-> 7-> 8- > 10 -> 19-> 20->
+22-> 28-> 30-> 35-> 40-> 45-> 50.
+Explanation:
+The resultant linked lists has every 
+node in a single level.
+(Note: | represents the bottom pointer.)
+
+
+
+
+class GfG {
+    Node flatten(Node root) {
+        if (root == null || root.next == null) {
+            return root;
+        }
+
+        // Recursion for remaining list
+        root.next = flatten(root.next);
+
+        // Merging this to next list
+        root = mergetwoList(root, root.next);
+
+        return root;
+    }
+
+    Node mergetwoList(Node a, Node b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+
+        Node result;
+
+        //compare merged nodes
+        if (a.data < b.data) {
+            result = a;
+            result.bottom = mergetwoList(a.bottom, b);
+        } else {
+            result = b;
+            result.bottom = mergetwoList(a, b.bottom);
+        }
+        return result;
+    }
+}
