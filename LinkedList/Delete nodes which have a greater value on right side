@@ -1,0 +1,49 @@
+Input:
+LinkedList = 12->15->10->11->5->6->2->3
+Output: 15->11->6->3
+
+Explanation: Since, 12, 10, 5 and 2 are the elements which have greater elements on the following nodes. So, after deleting them, the linked list would like be 15, 11, 6, 3.
+
+
+
+
+class Solution {
+    Node compute(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // Step 1: Reverse the linked list
+        Node reversedHead = reverseList(head);
+
+        // Step 2: Traverse the reversed list and delete nodes
+        Node maxNode = reversedHead;
+        Node current = reversedHead.next;
+        while (current != null) {
+            if (current.data < maxNode.data) {
+                maxNode.next = current.next;
+            } else {
+                maxNode = current;
+            }
+            current = current.next;
+        }
+
+        // Step 3: Reverse the modified list again to restore original order
+        return reverseList(reversedHead);
+    }
+
+    Node reverseList(Node head) {
+        Node prev = null;
+        Node current = head;
+        Node next = null;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
+    }
+}    
