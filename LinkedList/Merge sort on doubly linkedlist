@@ -1,0 +1,64 @@
+Input: LinkedList: 7 ↔ 3 ↔ 5 ↔ 2 ↔ 6 ↔ 4 ↔ 1 ↔ 8
+Output:
+LinkedList: 1 ↔ 2 ↔ 3 ↔ 4 ↔ 5 ↔ 6 ↔ 7 ↔ 8
+LinkedList: 8 ↔ 7 ↔ 6 ↔ 5 ↔ 4 ↔ 3 ↔ 2 ↔ 1
+Explanation: After sorting the given linked list in both ways, the resultant matrix will be as shown in the first two lines of the output. The first line shows the output for non-decreasing order, and the next line shows the output for non-increasing order.
+
+
+
+class Solution {
+    // Function to get the middle of the doubly linked list
+    public DLLNode getmid(DLLNode node) {
+        if (node == null) return null;
+        DLLNode slow = node;
+        DLLNode fast = node.next;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    // Function to merge two sorted doubly linked lists
+    public DLLNode mergeDoubly(DLLNode left, DLLNode right) {
+        if (left == null) {
+            return right;
+        }
+        if (right == null) {
+            return left;
+        }
+    
+        if (left.data <= right.data) {
+            left.next = mergeDoubly(left.next, right);
+            if (left.next != null) {
+                left.next.prev = left;
+            }
+            left.prev = null;
+            return left;
+        } else {
+            right.next = mergeDoubly(left, right.next);
+            if (right.next != null) {
+                right.next.prev = right;
+            }
+            right.prev = null;
+            return right;
+        }
+    }
+
+    // Function to sort the doubly linked list using merge sort
+    public DLLNode sortDoubly(DLLNode node) {
+        if (node == null || node.next == null) {
+            return node;
+        }
+
+        DLLNode mid = getmid(node);
+        DLLNode righthead = mid.next;
+        mid.next = null;
+
+        DLLNode left = sortDoubly(node);
+        DLLNode right = sortDoubly(righthead);
+
+        return mergeDoubly(left, right);
+    }
+}
