@@ -1,0 +1,140 @@
+//sortedmerge of two nodes
+then call getmid to basiclly split by slow and fast method (floyds algo)
+then mergesort in one node (head) 
+then to point the arbitary pointer to next and call mergesort(head)
+then print the list
+this all is done in merge sort only
+
+
+
+class Node {
+    int data;
+    Node next;
+  
+    // Pointer to next higher node
+    Node arbit; 
+
+    Node(int x) {
+        data = x;
+        next = null;
+        arbit = null;
+    }
+}
+
+class GfG {
+  
+    // Function to merge two sorted lists
+    public static Node SortedMerge(Node left, Node right) {
+  
+        // If one list is empty, return the other
+        if (left == null) return right;
+        if (right == null) return left;
+
+        Node result = null;
+        Node curr = null;
+
+        // Initialize result with the smaller node
+        if (left.data <= right.data) {
+            result = left;
+            left = left.arbit;
+        } else {
+            result = right;
+            right = right.arbit;
+        }
+        curr = result;
+
+        // Merge the two lists
+        while (left != null && right != null) {
+            if (left.data <= right.data) {
+                curr.arbit = left;
+                left = left.arbit;
+            } else {
+                curr.arbit = right;
+                right = right.arbit;
+            }
+            curr = curr.arbit;
+        }
+
+        // Attach remaining nodes
+        curr.arbit = (left != null) ? left : right;
+        return result;
+    }
+
+    // Function to split the list into two halves
+    public static Node split(Node head) {
+  
+        // If list is empty or has one node
+        if (head == null || head.arbit == null) return null;
+
+        Node slow = head;
+        Node fast = head.arbit;
+
+        // Move slow and fast pointers to find middle
+        while (fast != null && fast.arbit != null) {
+            slow = slow.arbit;
+            fast = fast.arbit.arbit;
+        }
+
+        // Split the list into two halves
+        Node second = slow.arbit;
+        slow.arbit = null;
+        return second;
+    }
+
+    // Recursive merge sort for arbit pointers
+    public static Node MergeSort(Node head) {
+  
+        // If list is empty or has one node
+        if (head == null || head.arbit == null) return head;
+
+        // Split the list into two halves
+        Node left = head;
+        Node right = split(head);
+
+        // Recursively sort both halves
+        left = MergeSort(left);
+        right = MergeSort(right);
+
+        // Merge the two sorted halves
+        return SortedMerge(left, right);
+    }
+
+    // Function to populate arbit pointers
+    public static Node populateArbit(Node head) {
+        Node curr = head;
+
+        // Initialize arbit pointers to next nodes
+        while (curr != null) {
+            curr.arbit = curr.next;
+            curr = curr.next;
+        }
+
+        // Sort the list using arbit pointers
+        return MergeSort(head);
+    }
+
+    public static void printListArbit(Node node) {
+        Node curr = node;
+
+        while (curr != null) {
+            System.out.print(curr.data + " ");
+            curr = curr.arbit;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+  
+        // Create a hardcoded linked list
+        // List: 5 -> 10 -> 2 -> 3
+        Node head = new Node(5);
+        head.next = new Node(10);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(3);
+
+        // Populate arbit pointers to next higher node
+        head = populateArbit(head);
+
+        printListArbit(head);
+    }
+}
