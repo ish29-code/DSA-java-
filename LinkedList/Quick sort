@@ -1,0 +1,65 @@
+//firstly converting linklist to arryalist then arraylist toa arr
+
+Input: Linked list: 1->6->2
+Output: 1->2->6
+
+
+
+class Solution {
+    public static Node quickSort(Node node) {
+        // Your code here
+        //so in this firstlty converting linkedlist to arraylist then arraylist to arry
+        ArrayList<Integer>elements = new ArrayList<>();
+        
+        Node temp = node;
+        while(temp!=null){
+            elements.add(temp.data);
+            temp=temp.next;
+        }
+        
+        //converting arrylist to array
+        int elementsarray[] = new int[elements.size()];
+        for(int i=0;i<elements.size();i++){
+            elementsarray[i] = elements.get(i);
+        }
+        
+        //calling quicksort
+        quicksortpivot(elementsarray,0,elementsarray.length-1);
+        
+        temp = node;
+        int i=0;
+        while(temp!=null){
+            temp.data = elementsarray[i++];
+            temp=temp.next;
+        }
+        return node;
+        
+    }
+    public static int partition(int arr[],int low,int high){
+        int pivot = arr[high];
+        int i = low-1;
+        
+        for(int j=low;j<high;j++){
+            if(arr[j]<pivot){
+                i++;
+                //swap arr[i] and arr[j]
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        int temp = arr[i+1];
+        arr[i+1] = arr[high];
+        arr[high] = temp;
+            
+        return i+1;
+    }
+    public static void quicksortpivot(int arr[],int low,int high){
+        if(low<high){
+            int pivotindex = partition(arr,low,high);
+            quicksortpivot(arr,low,pivotindex-1);
+            quicksortpivot(arr,pivotindex+1,high);
+            
+        }
+    }
+}
