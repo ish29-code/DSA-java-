@@ -1,0 +1,56 @@
+Input: LinkedList1: 1->0->0, LinkedList2: 1->2
+Output:  LinkedList: 8->8
+Explanation: First linked list represents 100 and the second one represents 12. 12 subtracted from 100 gives us 88 as the result. It is represented as 8->8 in the linked list.
+
+//  35 TESTCASES PASSED☹️☹️☹️
+class Solution {
+    static int ListToNum(Node head) {
+        int num = 0;
+        while (head != null) {
+            num = num * 10 + head.data;
+            head = head.next;
+        }
+        return num;
+    }
+
+    static Node NumToList(int num) {
+        Node dummy = new Node(0);
+        Node curr = dummy;
+        if (num == 0) {
+            return new Node(0);
+        }
+        while (num > 0) {
+            curr.next = new Node(num % 10);
+            num /= 10;
+            curr = curr.next;
+        }
+        return reverse(dummy.next);
+    }
+
+    static Node reverse(Node head) {
+        Node prev = null, curr = head, next;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    static Node subLinkedList(Node head1, Node head2) {
+        
+        int num1 = ListToNum(head1);
+        int num2 = ListToNum(head2);
+
+        if (num1 < num2) {
+            int temp = num1;
+            num1 = num2;
+            num2 = temp;
+        }
+
+        int ans = num1 - num2;
+        
+        return NumToList(ans);
+    }
+}
