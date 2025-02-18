@@ -1,0 +1,55 @@
+Input
+["MyStack", "push", "push", "top", "pop", "empty"]
+[[], [1], [2], [], [], []]
+Output
+[null, null, null, 2, 2, false]
+
+Explanation
+MyStack myStack = new MyStack();
+myStack.push(1);
+myStack.push(2);
+myStack.top(); // return 2
+myStack.pop(); // return 2
+myStack.empty(); // return False
+
+
+class MyStack {
+    private Queue<Integer> q1;
+    private Queue<Integer> q2;
+    public MyStack() { 
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
+        
+    }
+    
+    public void push(int x) {
+        q1.add(x);
+    }
+    
+    public int pop() {
+        while(q1.size()>1){
+            q2.add(q1.remove());
+        }
+        int res = q1.remove();
+        Queue<Integer> temp = q1;
+        q1=q2;
+        q2=temp;
+        return res;
+    }
+    
+    public int top() {
+        while(q1.size()>1){
+            q2.add(q1.remove());
+        }
+        int res = q1.remove();
+        Queue<Integer> temp = q1;
+        q2.add(res);
+        q1=q2;
+        q2=temp;
+        return res;
+    }
+    
+    public boolean empty() {
+        return q1.isEmpty();
+    }
+}
