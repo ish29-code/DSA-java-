@@ -1,0 +1,45 @@
+import java.util.Stack;
+
+public class DuplicateParenthesisChecker {
+
+    public static boolean hasDuplicateParenthesis(String expression) {
+        // Create a stack to keep track of characters
+        Stack<Character> stack = new Stack<>();
+
+        // Iterate through each character of the expression
+        for (char ch : expression.toCharArray()) {
+            // If the character is a closing parenthesis ')'
+            if (ch == ')') {
+                // Counter to check the number of elements between '(' and ')'
+                int elementsBetween = 0;
+
+                // Pop elements from the stack until an opening parenthesis '(' is found
+                while (stack.peek() != '(') {
+                    stack.pop();
+                    elementsBetween++;
+                }
+
+                // Pop the opening parenthesis '('
+                stack.pop();
+
+                // Check if there were no elements between '(' and ')'
+                if (elementsBetween < 1) {
+                    return true; // Duplicate parenthesis found
+                }
+            } else {
+                // If the character is not a closing parenthesis, push it onto the stack
+                stack.push(ch);
+            }
+        }
+        return false; // No duplicate parenthesis found
+    }
+
+    public static void main(String[] args) {
+        String expression = "((a + b) + ((c + d)))";
+        if (hasDuplicateParenthesis(expression)) {
+            System.out.println("The expression has duplicate parentheses.");
+        } else {
+            System.out.println("The expression does not have duplicate parentheses.");
+        }
+    }
+}
