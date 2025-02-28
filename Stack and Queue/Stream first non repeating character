@@ -1,0 +1,29 @@
+Input: s = "aabc"
+Output: "a#bb"
+
+class Solution {
+    public String FirstNonRepeating(String s) {
+        // code here
+        Queue<Character> q = new LinkedList<>();
+        Map<Character,Integer> map = new HashMap<>();
+        StringBuilder result = new StringBuilder();
+        
+        for(char ch : s.toCharArray()){
+            map.put(ch,map.getOrDefault(ch,0)+1);//count --> a:2,b:1,c:1
+            
+            q.add(ch);//adding in ch in queue
+            
+            while(!q.isEmpty() && map.get(q.peek())>1){
+                q.remove();
+            }
+            
+            if(q.isEmpty()){
+                result.append("#");
+            }
+            else{
+                result.append(q.peek());
+            }
+        }
+        return result.toString();
+    }
+}
