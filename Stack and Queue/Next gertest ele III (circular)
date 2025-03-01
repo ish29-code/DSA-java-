@@ -1,0 +1,22 @@
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int ans[] = new int[nums.length];
+        Stack<Integer> s = new Stack<>();
+
+        for(int i=0;i<nums.length;i++){
+            ans[i]=-1;//[-1,-1,-1,-1]
+        }
+
+        for(int i=0;i<2*nums.length;i++){
+            int num = nums[i%n];
+            while(!s.isEmpty() && nums[s.peek()]<num){
+                ans[s.pop()] = num;
+            }
+            if(i<n){
+                s.push(i);
+            }
+        }
+        return ans;
+    }
+}
