@@ -1,0 +1,35 @@
+Input: mat[][] = [[1, 1, 0], [0, 1, 0], [0, 1, 1]]
+Output: 1
+Explanation: 0th and 2nd person both know 1st person. Therefore, 1 is the celebrity person.
+
+
+class Solution {
+    public int celebrity(int mat[][]) {
+        int n = mat.length;
+        // code here
+        Stack<Integer> s = new Stack<>();
+        for(int i=0;i<n;i++){
+            s.push(i);//0,1,2
+        }
+        
+        while(s.size()>1){
+            int a = s.pop();//2
+            int b = s.pop();//1
+            
+            if(mat[a][b] == 1){
+                s.push(b);
+            }
+            else{
+                s.push(a);
+            }
+        }
+        int canidate = s.pop();
+        
+        for(int i=0;i<n;i++){
+            if(i!=canidate && (mat[canidate][i]==1 || mat[i][canidate]==0)){
+                return -1;
+            }
+        }
+        return canidate;//we have to return index
+    }
+}
