@@ -1,0 +1,62 @@
+Input: 
+grid = [[0,1,1,0], [1,1,0,0], [0,0,1,1]]
+Output: 
+[[1,0,0,1], [0,0,1,1], [1,1,0,0]]
+Explanation: 
+The grid is-
+0 1 1 0 
+1 1 0 0 
+0 0 1 1 
+- 0's at (0,0), (0,3), (1,2), (1,3), (2,0) and (2,1) are at a distance of 1 from 1's at (0,1), (0,2), (0,2), (2,3), (1,0) and (1,1) respectively.
+
+
+class Solution
+{
+    //Function to find distance of nearest 1 in the grid for each cell.
+    public int[][] nearest(int[][] grid)
+    {
+        // Code here
+        int n = grid.length;
+        int m = grid[0].length;
+        
+        //to add result
+        int result[][] = new int[n][m];
+        //to do bfs we need queue
+        Queue<int[]> q = new LinkedList<>();
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                    result[i][j] = 0;
+                    q.add(new int[]{i,j});
+                }
+                else{
+                    result[i][j] = Integer.MAX_VALUE;
+                }
+                
+            }
+        }
+        //direction
+        int dir[][] = {{-1,0},{1,0},{0,1},{0,-1}};
+        
+        while(!q.isEmpty()){
+            int curr[] = q.remove();
+            int x = curr[0];
+            int y = curr[1];
+            
+            for(int[] dirr : dir){
+                int nx = x + dirr[0];
+                int ny = y + dirr[1];
+                
+                
+                if(nx>=0 && nx<n && ny>=0 && ny<m){
+                    if(result[nx][ny] > result[x][y]+1){
+                        result[nx][ny]=result[x][y]+1;
+                        q.add(new int[]{nx,ny});
+                    }
+                }
+            }
+        }
+        return result;
+    }
+}
