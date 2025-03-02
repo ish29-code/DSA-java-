@@ -1,0 +1,60 @@
+Input: mat[][] = 
+[[0, 1, 2], 
+[0, 1, 2], 
+[2, 1, 1]]
+Output: 1
+Explanation: Oranges at positions (0,2), (1,2), (2,0) will rot oranges at (0,1), (1,1), (2,2) and (2,1) in unit time.
+
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int fresh=0;
+        Queue<int[]> q = new LinkedList<>();
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==2){
+                    q.add(new int[]{i,j});
+                }
+                else if(grid[i][j]==1){
+                    fresh++;
+                }
+            }
+        }
+
+        if(fresh==0){
+            return 0;
+        }
+
+        int minutes=0;
+        int dir[][] = {{-1,0},{1,0},{0,-1},{0,1}};
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            boolean hasrotten = false;
+
+            for(int i=0;i<size;i++){
+                int curr[] = q.remove();
+                int x = curr[0];
+                int y = curr[1];
+
+                for(int dirr[] : dir){
+                    int nx = x+dirr[0];
+                    int ny = y+dirr[1];
+
+                    if(nx>=0 && nx<n && ny>=0 && ny<m && grid[nx][ny]==1){
+                        grid[nx][ny]=2;
+                        q.add(new int[]{nx,ny});
+                        fresh--;
+                        hasrotten = true;
+                    }
+                }
+            }
+            if(hasrotten){
+                minutes++;
+            }
+        }
+        return fresh==0 ? minutes : -1;
+    }
+}
