@@ -1,0 +1,84 @@
+Input: cap = 2, Q = 2, Queries = [["PUT", 1, 2], ["GET", 1]]
+Output: [2]
+Explanation: Cache Size = 2
+["PUT", 1, 2] will insert the key-value pair (1, 2) in the cache,
+["GET", 1] will print the value corresponding to Key 1, ie 2.
+
+
+class LRUCache {
+    
+    static class Node{
+        int key,value;
+        Node next;
+        Node prev;
+        
+        Node(int key,int value){
+            this.key = key;
+            this.value = value;
+        }
+    }
+    
+    private static int capacity;
+    private static HashMap<Integer,Node> map;
+    private static Node head,tail;
+    
+    private static void remove(Node node){
+        Node prevnode = node.prev;
+        Node afternode = node.next;
+        
+        prevnode.next = afternode;
+        afternode.prev = prevnode;
+        
+    }
+    
+    private static void insertafterhead(Node node){
+        Node curraftnode = head.next;
+        head.next  = node;
+        node.next = curraftnode;
+        curraftnode.prev = node;
+        node.prev = head;
+    }
+    
+    // Constructor for initializing the cache capacity with the given value.
+    LRUCache(int cap) {
+        // code here
+        capacity = cap;
+        map = new HashMap<>();
+        head = new Node(0,0);
+        tail = new Node(0,0);
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    // Function to return value corresponding to the key.
+    public static int get(int key) {
+        // your code here
+        if(map.containsKey(key)){
+            Node node = map.get(key);
+            remove(node);
+            insertafterhead(node);
+            return node.value;
+        }
+        return -1;
+    }
+
+    // Function for storing key-value pair.
+    public static void put(int key, int value) {
+        // your code here
+        if(map.containsKey(key)){
+            Node node = map.get(key);
+            node.value=value;//update
+            remove(node);
+            insertafterhead(node);
+        }
+        else{
+            if(map.size() == capacity){
+                map.remove(tail.prev.key);
+                remove(tail.prev);
+            }
+            Node newnode = new Node(key,value);
+            map.put(key,newnode);
+            insertafterhead(newnode);
+        }
+    }
+}
