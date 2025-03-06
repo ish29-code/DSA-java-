@@ -1,0 +1,22 @@
+Input: N = 43
+Output: 20 20 2 1
+Explaination: 
+Minimum number of coins and notes needed 
+to make 43. 
+
+class Solution{
+    static List<Integer> minPartition(int N)
+    {
+        // code here
+        List<Integer> result = new ArrayList<>();
+        int arr[] = {2000,500,200,100,50,20,10,5,2,1};
+        
+        for(int i=0;i<arr.length;i++){
+            while(N>=arr[i]){
+                result.add(arr[i]);
+                N-=arr[i];//reduce the ammount
+            }
+        }
+        return result;
+    }
+}
