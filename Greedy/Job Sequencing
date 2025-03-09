@@ -1,0 +1,54 @@
+Input: id = [1, 2, 3, 4], deadline = [4, 1, 1, 1], profit = [20, 1, 40, 30]
+Output: [2, 60]
+Explanation: Job1 and Job3 can be done with maximum profit of 60 (20+40).
+
+
+class Solution {
+    
+    class Job{
+    int id;
+    int profit;
+    int deadline;
+    public Job(int id,int profit,int deadline){
+        this.id = id;
+        this.profit = profit;
+        this.deadline = deadline;
+    }
+}
+
+    public ArrayList<Integer> JobSequencing(int[] id, int[] deadline, int[] profit) {
+        // code here..
+        int n = id.length;
+        Job jobs[] = new Job[n];
+        
+        for(int i=0;i<n;i++){
+            jobs[i] = new Job(id[i],profit[i],deadline[i]);
+        }
+        
+        Arrays.sort(jobs,(a,b)->b.profit-a.profit);
+        
+        int maxdeadline=0;
+        for(Job job : jobs){
+            maxdeadline = Math.max(maxdeadline,job.deadline);
+        }
+        int slots[] = new int[maxdeadline];
+        Arrays.fill(slots,-1);//[-1,-1,-1,-1]
+        
+        int numjobs=0,totalprofit=0;
+        for(Job job : jobs){
+            for(int j=job.deadline-1;j>=0;j--){
+                if(slots[j]==-1){
+                    slots[j] = job.id;
+                    numjobs++;
+                    totalprofit += job.profit;
+                    break;
+                }
+            }
+        }
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(numjobs);
+        result.add(totalprofit);
+        return result;
+        
+    }
+}
