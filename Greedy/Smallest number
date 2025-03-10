@@ -1,0 +1,41 @@
+Input: s = 9, d = 2
+Output: 18 
+Explanation: 18 is the smallest number possible with the sum of digits = 9 and total digits = 2.
+
+
+class Solution{
+    public static String smallestNumber(int s, int d) {
+        // Check if it's possible
+        if (s > 9 * d || s < 1) {
+            return "-1"; // Not possible to create such a number
+        }
+
+        // Array to store the digits of the result
+        int[] result = new int[d];
+
+        // Subtract 1 initially to make the leftmost digit non-zero later
+        s -= 1;
+
+        // Fill the number from rightmost digit to leftmost
+        for (int i = d - 1; i > 0; i--) {
+            if (s > 9) {
+                result[i] = 9; // Place 9 in the current position
+                s -= 9;
+            } else {
+                result[i] = s; // Place the remaining sum here
+                s = 0;
+            }
+        }
+
+        // Set the first digit (leftmost) to make the number valid
+        result[0] = s + 1;
+
+        // Convert the digits array to a string
+        StringBuilder smallestNumber = new StringBuilder();
+        for (int digit : result) {
+            smallestNumber.append(digit);
+        }
+
+        return smallestNumber.toString();
+    }
+}
