@@ -1,0 +1,38 @@
+Input: s = “aaabc” 
+Output: abaca 
+Explanation: No two adjacent characters are same in the output string.
+
+
+
+class Solution {
+    public static String rearrangeString(String s) {
+        // code here
+        Map<Character,Integer> map = new HashMap<>();//map to add frequency
+        
+        for(char c : s.toCharArray()){
+            map.put(c,map.getOrDefault(c,0)+1);//[a:3,b:1,c:1]
+        }
+        
+        PriorityQueue<Character> maxheap = new PriorityQueue<>((a,b)->map.get(b)-map.get(a));
+        maxheap.addAll(map.keySet());//[a,b,c]
+        
+        StringBuilder result = new StringBuilder();
+        Character prevchar = null;
+        int prevfreq = 0;
+        
+        while(!maxheap.isEmpty()){
+            char currchar = maxheap.remove();//a
+            result.append(currchar);//[a]
+            int currfreq = map.get(currchar)-1;//a:2
+            
+            if(prevfreq>0){
+                maxheap.add(prevchar);
+            }
+            
+            prevchar = currchar;//a
+            prevfreq = currfreq;//2
+            map.put(currchar,currfreq);//(a:2)
+        }
+        return result.length() == s.length() ? result.toString() : "";
+    }
+}
