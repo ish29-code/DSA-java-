@@ -1,0 +1,69 @@
+Input: root = [3,9,20,null,null,15,7]
+Output: [[15,7],[9,20],[3]]
+
+// This REVERSE  but for  NON-REVERSE ---> result.add(li)
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<>();
+        List<List<Integer>> result = new ArrayList<>();
+
+        if(root==null){
+            return result;
+        }
+        q.add(root);
+
+        while(!q.isEmpty()){
+            List<Integer> li = new ArrayList<>();
+            int size = q.size();
+            for(int i=0;i<size;i++){
+                TreeNode curr = q.remove();
+                li.add(curr.val);
+
+                if(curr.left != null){
+                    q.add(curr.left);
+                }
+                if(curr.right != null){
+                    q.add(curr.right);
+                }    
+            }
+            result.addFirst(li);//in reverse
+        }
+        return result;
+    }
+}
+
+
+OR 
+
+class Tree {
+    public ArrayList<Integer> reverseLevelOrder(Node root) {
+        // code here
+        Stack<Node> st = new Stack<>();
+        
+        Queue<Node> q = new LinkedList<>();
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        
+        if(root==null){
+            return result;
+        }
+        q.add(root);
+        
+        while(!q.isEmpty()){
+            Node curr = q.remove();
+            st.push(curr);
+            
+            if(curr.right!=null){
+                q.add(curr.right);
+            }
+            if(curr.left!=null){
+                q.add(curr.left);
+            }
+        }
+        
+        while(!st.isEmpty()){
+            result.add(st.pop().data);
+        }
+        return result;
+    }
+}
