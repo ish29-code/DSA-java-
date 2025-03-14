@@ -1,0 +1,15 @@
+Input: root = [3,9,20,null,null,15,7]
+Output: 3
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        int htleft = maxDepth(root.left);
+        int htright = maxDepth(root.right);
+
+        int maxheight = Math.max(htleft,htright)+1;
+        return maxheight;
+    }
+}
