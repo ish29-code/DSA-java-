@@ -1,0 +1,36 @@
+Input: root = [1, 2, 3, 4, 5]
+     2_2
+Output: [1, 3, 5]
+
+class Solution {
+    // Function to return list containing elements of right view of binary tree.
+    ArrayList<Integer> rightView(Node root) {
+        // add code here.
+        ArrayList<Integer> result = new ArrayList<>();
+        Queue<Node> q = new LinkedList<>();
+        
+        if(root==null){
+            return result;
+        }
+        q.add(root);
+        
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i=0;i<size;i++){
+                Node curr = q.remove();
+                
+                if(i==size-1){
+                    result.add(curr.data);
+                }
+                
+                if(curr.left!=null){
+                    q.add(curr.left);
+                }
+                if(curr.right!=null){
+                    q.add(curr.right);
+                }
+            }
+        }
+        return result;
+    }
+}
