@@ -1,0 +1,46 @@
+Input: root = [1, 2, 3]
+    1
+   / \
+  2   3
+Output: true
+Explanation: The binary tree has a height of 2 and the leaves are at the same level.
+
+
+class Solution {
+    boolean check(Node root) {
+        // Your code here
+        if(root==null){
+            return true;
+        }
+        Queue<Node> q = new LinkedList<>();
+        Queue<Integer> levels = new LinkedList<>();
+        q.add(root);
+        levels.add(0);
+        
+        Integer leaflevel = null;
+        
+        while(!q.isEmpty()){
+            Node curr = q.remove();
+            int level = levels.remove();
+            if(curr.left==null && curr.right==null){
+                if(leaflevel==null){
+                    leaflevel = level;
+                }
+                else if(leaflevel!=level){
+                    return false;
+                }
+            }
+            
+            if(curr.left!=null){
+                q.add(curr.left);
+                levels.add(level+1);
+            }
+            if(curr.right!=null){
+                q.add(curr.right);
+                levels.add(level+1);
+            }
+            
+        }
+        return true;
+    }
+}
