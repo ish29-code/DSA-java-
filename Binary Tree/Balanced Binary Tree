@@ -1,0 +1,26 @@
+Input: root[] = [10, 20, 30, 40, 60]
+
+   
+Output: true
+Explanation: The height difference between the left and right subtrees at all nodes is at most 1. Hence, the tree is balanced.
+
+//finding height 
+class Solution {
+    public int checkheight(TreeNode node){
+        if(node==null){
+            return 0;
+        }
+
+        int lefth = checkheight(node.left);
+        int righth = checkheight(node.right);
+
+        if(lefth == -1 || righth == -1 || Math.abs(lefth-righth)>1){
+            return -1;
+        }
+
+        return Math.max(lefth,righth)+1;
+    }
+    public boolean isBalanced(TreeNode root) {
+        return checkheight(root) != -1;
+    }
+}
