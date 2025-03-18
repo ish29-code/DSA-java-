@@ -1,0 +1,44 @@
+
+Input:
+             10
+          /      \
+        -2        6
+       /   \     /  \
+     8     -4   7    5
+
+Output:
+            20
+          /    \
+        4        12
+       /  \     /  \
+     0     0   0    0
+
+Explanation:
+
+           (4-2+12+6)
+          /           \
+      (8-4)          (7+5)
+       /   \         /  \
+      0     0       0    0
+
+
+class Solution{
+    public void toSumTree(Node root){
+         //add code here.
+        sum(root);
+    }
+    public int sum(Node node){
+        if(node==null){
+            return 0;
+        }
+        
+        int leftsum = sum(node.left);
+        int rightsum = sum(node.right);
+        
+        int oldval = node.data;
+        
+        node.data = leftsum + rightsum;
+        
+        return oldval + node.data;
+    }
+}
