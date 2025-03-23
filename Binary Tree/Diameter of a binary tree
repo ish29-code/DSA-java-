@@ -1,0 +1,47 @@
+Input: root[] = [1, 2, 3]
+
+Output: 2
+Explanation: The longest path has 2 edges (node 2 -> node 1 -> node 3).
+
+
+
+class Solution {
+    class TreeInfo {
+        int ht; // Height of the subtree
+        int dia; // Diameter of the subtree
+
+        TreeInfo(int ht, int dia) {
+            this.ht = ht;
+            this.dia = dia;
+        }
+    }
+
+    public int diameter(Node root) {
+       
+        return calculateDiameter(root).dia;
+    }
+
+    private TreeInfo calculateDiameter(Node root) {
+        if (root == null) {
+            // Base case: If the tree is empty, height and diameter are 0
+            return new TreeInfo(0, 0);
+        }
+
+        // Recursively calculate the height and diameter of left and right subtrees
+        TreeInfo left = calculateDiameter(root.left);
+        TreeInfo right = calculateDiameter(root.right);
+
+        int myHeight = Math.max(left.ht, right.ht) + 1;
+
+       
+        int dia1 = left.dia;
+        int dia2 = right.dia;
+        int dia3 = left.ht + right.ht; // Longest path through the root (in edges)
+
+        // Calculate the maximum diameter
+        int myDia = Math.max(Math.max(dia1, dia2), dia3);
+
+        // Return the height and diameter for the current node
+        return new TreeInfo(myHeight, myDia);
+    }
+}
