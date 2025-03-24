@@ -1,0 +1,60 @@
+Input: root[] = [1, 2, 3] 
+ 
+Output: [2, 1, 3]
+
+
+import java.util.*;
+
+class Solution {
+    // Function to return a list of nodes visible from the top view
+    // from left to right in Binary Tree.
+    static ArrayList<Integer> topView(Node root) {
+        ArrayList<Integer> li = new ArrayList<>();
+        if (root == null) {
+            return li;
+        }
+
+        // Map to store the horizontal distance (hd) and the first node at that hd
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        // Queue to perform level order traversal (node with its horizontal distance)
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(root, 0)); // Add root node with hd = 0
+
+        while (!q.isEmpty()) {
+            Pair currPair = q.remove();
+            Node currNode = currPair.node;
+            int hd = currPair.hd;
+
+            // If no node is yet added at this horizontal distance, add it
+            if (!map.containsKey(hd)) {
+                map.put(hd, currNode.data);
+            }
+
+            // Traverse the left and right children with updated horizontal distances
+            if (currNode.left != null) {
+                q.add(new Pair(currNode.left, hd - 1));
+            }
+            if (currNode.right != null) {
+                q.add(new Pair(currNode.right, hd + 1));
+            }
+        }
+
+        // Add all values in the map to the list
+        for (int value : map.values()) {
+            li.add(value);
+        }
+
+        return li;
+    }
+}
+
+// Helper class to store a node and its horizontal distance
+class Pair {
+    Node node;
+    int hd;
+
+    Pair(Node node, int hd) {
+        this.node = node;
+        this.hd = hd;
+    }
+}
