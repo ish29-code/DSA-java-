@@ -1,0 +1,42 @@
+Input : root = [8, 3, 10, 1, 6, N, 14, N, N, 4, 7, 13]
+            8
+         /     \
+        3      10
+      /   \      \
+     1     6     14
+         /   \   /
+        4     7 13
+Output : [8, 10, 14, 3, 6, 7, 13, 1, 4]
+Explanation:
+unnamed
+Diagonal Traversal of binary tree : 8 10 14 3 6 7 13 1 4
+
+
+class Tree
+{
+     public ArrayList<Integer> diagonal(Node root)
+      {
+           //add your code here.
+           ArrayList<Integer> result = new ArrayList<>();
+           if(root==null){
+               return result;
+           }
+           
+           Queue<Node> q = new LinkedList<>();
+           q.add(root);
+           
+           while(!q.isEmpty()){
+               Node curr = q.remove();
+               
+               while(curr!=null){
+                   result.add(curr.data);
+                   
+                   if(curr.left!=null){
+                       q.add(curr.left);
+                   }
+                   curr = curr.right;
+               }
+           }
+           return result;
+      }
+}
