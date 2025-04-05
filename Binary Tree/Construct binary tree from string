@@ -1,0 +1,47 @@
+class Solution 
+{
+    int i = 0;
+    public void solve(Node root, String s)
+    {
+        if (i < s.length() && Character.isDigit(s.charAt(i))) 
+        {
+            int sum = 0;
+            while (i < s.length() && Character.isDigit(s.charAt(i))) 
+            {
+                sum *= 10;
+                sum += s.charAt(i) - '0';
+                i++;
+            }
+            root.data = sum;
+        }
+        
+        if (i < s.length() && s.charAt(i) == '(') 
+        {
+            root.left = new Node(0);
+            i++;
+            solve(root.left, s);
+            if (root.left.data == 0) root.left = null;
+        }
+        
+        if (i < s.length() && s.charAt(i) == '(') 
+        {
+            root.right = new Node(0);
+            i++;
+            solve(root.right, s);
+            if (root.right.data == 0) root.right = null;
+        }
+        
+        if (i >= s.length() || s.charAt(i) == ')') 
+        {
+            i++;
+            return;
+        }
+    }
+    
+    public Node treeFromString(String s) 
+    {
+        Node root = new Node(0);
+        solve(root, s);
+        return root;
+    }
+}
