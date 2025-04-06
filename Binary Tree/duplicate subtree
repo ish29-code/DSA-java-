@@ -26,3 +26,27 @@ class Solution {
     }
 }
 
+
+class Solution {
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        List<TreeNode> result = new ArrayList<>();
+        Map<String,Integer> map = new HashMap<>();
+        finddupli(root,map,result);
+        return result;
+    }
+    public String finddupli(TreeNode root, Map<String,Integer> map,List<TreeNode> result){
+        if(root==null){
+            return "#";
+        }
+
+        String subtree = "(" + finddupli(root.left,map,result)+","+root.val+","+finddupli(root.right,map,result)+")";
+
+        map.put(subtree,map.getOrDefault(subtree,0)+1);
+
+        if(map.get(subtree)==2){
+            result.add(root);
+        }
+
+        return subtree;
+    }
+}
