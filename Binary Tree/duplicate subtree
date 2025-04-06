@@ -1,0 +1,28 @@
+class Solution {
+    public int dupSub(Node root) {
+        HashMap<String, Integer> subtreeMap = new HashMap<>();
+        return findDuplicateSubtrees(root, subtreeMap) ? 1 : 0;
+    }
+
+    private boolean findDuplicateSubtrees(Node root, HashMap<String, Integer> subtreeMap) {
+        if (root == null) return false;
+
+        String subtree = serialize(root);
+
+        // Track occurrences in the hashmap
+        subtreeMap.put(subtree, subtreeMap.getOrDefault(subtree, 0) + 1);
+
+        // Ensure duplicate subtree has **at least two nodes** before marking
+        if (subtreeMap.get(subtree) == 2 && subtree.contains("|")) return true;
+
+        return findDuplicateSubtrees(root.left, subtreeMap) || findDuplicateSubtrees(root.right, subtreeMap);
+    }
+
+    private String serialize(Node root) {
+        if (root == null) return "#"; // Represent null nodes clearly
+        if (root.left == null && root.right == null) return Integer.toString(root.data); // Skip leaf nodes
+
+        return "(" + serialize(root.left) + "|" + root.data + "|" + serialize(root.right) + ")";
+    }
+}
+
