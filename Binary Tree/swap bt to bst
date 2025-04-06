@@ -1,0 +1,66 @@
+class Solution {
+    
+    // Helper method to get in-order traversal of a binary tree
+    public static void inorder(int[] arr, List<Integer> inorderList, int idx) {
+        if (idx >= arr.length) return;
+
+        // Left subtree
+        inorder(arr, inorderList, 2 * idx + 1);
+        
+        // Store current node
+        inorderList.add(arr[idx]);
+        
+        // Right subtree
+        inorder(arr, inorderList, 2 * idx + 2);
+    }
+
+    // Function to compute minimum swaps required to convert Binary Tree to BST
+    public static int minSwaps(int[] arr) {
+        List<Integer> inorderList = new ArrayList<>();
+        inorder(arr, inorderList, 0);
+
+        // Store value-index pairs before sorting
+        List<Pair> sortedPairs = new ArrayList<>();
+        for (int i = 0; i < inorderList.size(); i++) {
+            sortedPairs.add(new Pair(inorderList.get(i), i));
+        }
+
+        // Sort pairs based on values to match BST in-order traversal
+        sortedPairs.sort(Comparator.comparingInt(p -> p.value));
+
+        return countSwaps(sortedPairs);
+    }
+
+    // Function to count the minimum swaps needed using cycle detection
+    private static int countSwaps(List<Pair> sortedPairs) {
+        int n = sortedPairs.size();
+        boolean[] visited = new boolean[n];
+        int swapCount = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (visited[i] || sortedPairs.get(i).index == i) continue;
+
+            int cycleSize = 0;
+            int j = i;
+            
+            while (!visited[j]) {
+                visited[j] = true;
+                j = sortedPairs.get(j).index;
+                cycleSize++;
+            }
+
+            if (cycleSize > 1) swapCount += (cycleSize - 1);
+        }
+
+        return swapCount;
+    }
+
+    // Helper class to store value-index pairs
+    static class Pair {
+        int value, index;
+        Pair(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
+    }
+}
