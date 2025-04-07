@@ -1,0 +1,29 @@
+Input: root = [1,2,3,4], x = 4, y = 3
+Output: false
+
+class Solution {
+    private TreeNode parentx,parenty;
+    private int depthx,depthy;
+    public boolean isCousins(TreeNode root, int x, int y) {
+        dfs(root,null,x,y,0);
+        return (depthx==depthy) && (parentx!=parenty);
+    }
+
+    public void dfs(TreeNode node,TreeNode parent,int x,int y,int depth){
+        if(node==null){
+            return;
+        }
+
+        if(node.val==x){
+            parentx = parent;
+            depthx = depth;
+        }
+        else if(node.val==y){
+            parenty=parent;
+            depthy = depth;
+        }
+
+        dfs(node.left,node,x,y,depth+1);
+        dfs(node.right,node,x,y,depth+1);
+    }
+}
