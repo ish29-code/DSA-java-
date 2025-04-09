@@ -1,0 +1,23 @@
+Input: root[] = [10, 2, 10, 20, 1, N, -25, N, N, N, N, 3, 4]
+Output: 42
+
+class Solution {
+    // Function to return maximum path sum from any node in a tree.
+    int maxsum;
+    int findMaxSum(Node node) {
+        // your code goes here
+        maxsum = Integer.MIN_VALUE;
+        find(node);
+        return maxsum;
+    }
+    int find(Node node){
+        if(node==null){
+            return 0;
+        }
+        int leftmax = Math.max(find(node.left),0);
+        int rightmax = Math.max(find(node.right),0);
+        
+        maxsum = Math.max(maxsum,node.data+leftmax+rightmax);
+        return node.data + Math.max(leftmax,rightmax);
+    }
+}
