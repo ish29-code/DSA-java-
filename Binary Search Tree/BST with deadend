@@ -1,0 +1,33 @@
+Input :   
+               8
+             /   \ 
+           5      9
+         /  \     
+        2    7 
+       /
+      1     
+          
+Output : 
+Yes
+Explanation : 
+Node 1 is a Dead End in the given BST.
+
+
+class Solution
+{
+    public static boolean isDeadEnd(Node root)
+    {
+        //Add your code here.
+        return check(root,1,Integer.MIN_VALUE);
+    }
+    public static boolean check(Node root,int min,int max){
+        if(root==null){
+            return false;
+        }
+        if(min==max){
+            return true;
+        }
+        
+        return check(root.left,min,root.data-1) || check(root.right,root.data+1,max);
+    }
+}
