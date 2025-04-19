@@ -1,0 +1,58 @@
+Input: root = [3,1,4,null,2], k = 1
+Output: 1
+
+
+Input:
+      4
+    /   \
+   2     9
+k = 2 
+Output: 4
+Explanation: 2nd Largest element in BST is 4
+
+
+class Solution {
+   
+    public int kthSmallest(TreeNode root, int k) {
+        List<Integer> li = new ArrayList<>();
+        inorder(root,li);
+        return li.get(k-1);
+    }
+    private void inorder(TreeNode root,List<Integer> li){
+        if(root==null){
+            return;
+        }
+        inorder(root.left,li);
+        li.add(root.val);
+        inorder(root.right,li);
+    }
+}
+
+OR
+
+
+class Solution {
+    private int count = 0;
+    private int result = -1;
+    // return the Kth largest element in the given BST rooted at 'root'
+    public int kthLargest(Node root, int k) {
+        // Your code here
+        reverseinorder(root,k);
+        return result;
+    }
+    private void reverseinorder(Node root,int k){
+        if(root==null || count>=k){
+            return;
+        }
+        
+        reverseinorder(root.right,k);
+        
+        count++;
+        if(count == k){
+            result = root.data;
+            return;
+        }
+        
+        reverseinorder(root.left,k);
+    }
+}
