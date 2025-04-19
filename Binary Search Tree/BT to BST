@@ -1,0 +1,52 @@
+Input:
+      1
+    /   \
+   2     3
+Output: 
+1 2 3
+Explanation:
+The converted BST will be 
+      2
+    /   \
+   1     3
+
+
+class Solution
+{
+    // The given root is the root of the Binary Tree
+    // Return the root of the generated BST
+    Node binaryTreeToBST(Node root)
+    {
+       // Your code here
+       if(root==null){
+           return null;
+       }
+       //step 1
+       List<Integer> values = new ArrayList<>();
+       inorder(root,values);
+       //step 2
+       Collections.sort(values);
+       //step 3
+       int index[] = {0};
+       rebuild(root,values,index);
+       return root;
+       
+    }
+    void inorder(Node root,List<Integer>values){
+        if(root==null){
+            return;
+        }
+        inorder(root.left,values);
+        values.add(root.data);
+        inorder(root.right,values);
+    }
+    void rebuild(Node root,List<Integer> sortedvalues,int index[]){
+        if(root==null){
+            return;
+        }
+        rebuild(root.left,sortedvalues,index);
+        root.data = sortedvalues.get(index[0]++);
+        rebuild(root.right,sortedvalues,index);
+    }
+}
+ 
