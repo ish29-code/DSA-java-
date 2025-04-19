@@ -1,5 +1,4 @@
-Input: root = [3,1,4,null,2], k = 1
-Output: 1
+
 
 
 Input:
@@ -9,26 +8,6 @@ Input:
 k = 2 
 Output: 4
 Explanation: 2nd Largest element in BST is 4
-
-
-class Solution {
-   
-    public int kthSmallest(TreeNode root, int k) {
-        List<Integer> li = new ArrayList<>();
-        inorder(root,li);
-        return li.get(k-1);
-    }
-    private void inorder(TreeNode root,List<Integer> li){
-        if(root==null){
-            return;
-        }
-        inorder(root.left,li);
-        li.add(root.val);
-        inorder(root.right,li);
-    }
-}
-
-OR
 
 
 class Solution {
