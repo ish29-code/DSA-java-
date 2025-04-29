@@ -1,0 +1,39 @@
+Input:
+N = 5
+arr[]  = {40,30,35,80,100}
+Output: 35 30 100 80 40
+Explanation: PreOrder: 40 30 35 80 100
+Therefore, the BST will be:
+              40
+           /      \
+         30       80
+           \        \   
+           35      100
+Hence, the postOrder traversal will
+be: 35 30 100 80 40
+
+static class Solution {
+    // Function that constructs BST from its preorder traversal.
+    int index = 0;
+    public Node Bst(int pre[], int size) {
+        // code here
+        return constructBST(pre,Integer.MIN_VALUE,Integer.MAX_VALUE);
+    }
+    private Node constructBST(int pre[],int min,int max){
+        if(index>=pre.length){
+            return null;
+        }
+        
+        int value = pre[index];
+        if(value<min || value>max){
+            return null;
+        }
+        
+        Node root = new Node(value);
+        index++;
+        
+        root.left = constructBST(pre,min,value);
+        root.right = constructBST(pre,value,max);
+        return root;
+    }
+}
