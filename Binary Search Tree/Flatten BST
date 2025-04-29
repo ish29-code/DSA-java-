@@ -1,0 +1,56 @@
+Input:
+          5
+        /    \
+       3      7
+      /  \    /   \
+     2   4  6     8
+Output: 2 3 4 5 6 7 8
+Explanation: 
+After flattening, the tree looks
+like this
+    2
+     \
+      3
+       \
+        4
+         \
+          5
+           \
+            6
+             \
+              7
+               \
+                8
+Here, left of each node points
+to NULL and right contains the
+next node.
+
+
+class Solution {
+    private Node prev = null;
+    public Node flattenBST(Node root) {
+        // Code here
+        if(root==null){
+            return null;
+        }
+        
+        Node dummy = new Node(-1);
+        prev = dummy;
+        
+        inorder(root);
+        return dummy.right;
+    }
+    private void inorder(Node root){
+        if(root==null){
+            return;
+        }
+        
+        inorder(root.left);
+        
+        prev.right = root;
+        root.left = null;
+        prev = root;
+        
+        inorder(root.right);
+    }
+}
