@@ -1,0 +1,44 @@
+Input: 
+          1
+        /   \
+       2     5
+      / \     \
+     3   4     6
+Output : 1 2 3 4 5 6 
+ 
+Explanation: After flattening, the tree looks like this - 
+     1
+      \
+       2
+        \
+         3
+          \
+           4
+            \ 
+             5 
+              \
+               6
+Here, left of each node points to NULL and right contains the next node in preorder.The inorder traversal of this flattened tree is 1 2 3 4 5 6.
+
+
+class Solution {
+    public static void flatten(Node root) {
+        // code here
+        Node curr = root;
+        
+        while(curr!=null){
+            if(curr.left!=null){
+                Node predecessor = curr.left;
+                
+                while(predecessor.right!=null){
+                    predecessor = predecessor.right;
+                }
+                
+                predecessor.right = curr.right;
+                curr.right = curr.left;
+                curr.left = null;
+            }
+            curr = curr.right;
+        }
+    }
+}
