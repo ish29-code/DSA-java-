@@ -1,0 +1,45 @@
+Input: root[] = [10, 5, 50, 1, N, 40, 100], l = 5, h = 45
+         
+Output: 3
+Explanation: There are three nodes in range [5, 45] =  5, 10 and 40.
+
+
+
+class Solution {
+    int getCount(Node root, int l, int h) {
+        // Your code here
+        if(root==null){
+            return 0;
+        }
+        if(l<= root.data && root.data<=h){
+            return 1+ getCount(root.left,l,h) + getCount(root.right,l,h);
+        }
+        else if(root.data<l){
+            return getCount(root.right,l,h);
+        }
+        else{
+            return getCount(root.left,l,h);
+        }
+    }
+}
+
+IF SUM OF RANGE.......
+
+class Solution {
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        if(root==null){
+            return 0;
+        }
+        int sum=0;
+        if(low<=root.val && root.val<=high){
+            sum += root.val;
+        }
+        if(root.val>low){
+            sum+=rangeSumBST(root.left,low,high);
+        }
+        if(root.val<high){
+            sum+=rangeSumBST(root.right,low,high);
+        }
+        return sum;
+    }
+}
