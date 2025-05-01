@@ -1,0 +1,42 @@
+Input: root[] = [30, 20, N, 10, N]
+     
+Output: 2
+     
+Explanation: The above unbalanced BST is converted to balanced with the minimum possible height i.e. 2.
+
+
+class Solution {
+    void inorder(Node root,ArrayList<Node>nodes){
+        if(root==null){
+            return;
+        }
+        inorder(root.left,nodes);
+        nodes.add(root);
+        inorder(root.right,nodes);
+    }
+    
+    Node buildbalanced(ArrayList<Node> nodes,int start,int end){
+        if(start>end){
+            return null;
+        }
+        int mid = (start+end)/2;
+        Node node = nodes.get(mid);
+        
+        node.left = buildbalanced(nodes,start,mid-1);
+        node.right = buildbalanced(nodes,mid+1,end);
+        
+        return node;
+    }
+    
+    Node balanceBST(Node root) {
+        // Add your code here.
+        if(root==null){
+            return null;
+        }
+        
+        ArrayList<Node> nodes = new ArrayList<>();
+        inorder(root,nodes);
+        return buildbalanced(nodes,0,nodes.size()-1);
+        
+    }
+}
