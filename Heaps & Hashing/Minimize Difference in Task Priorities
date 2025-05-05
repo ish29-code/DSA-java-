@@ -1,0 +1,36 @@
+Input: arr[] = [4, 1, 7, 5, 3, 8, 6], k = 3, m = 1, t = 5 
+Output: 2
+Explanation: Selecting tasks with priorities [6, 7, 8] minimizes the difference to 2 while ensuring at least one task meets the priority threshold of ≥ 5.
+
+
+class Solution {
+    int minDiff(int[] arr, int k, int m, int th) {
+        Arrays.sort(arr); 
+
+        int n = arr.length;
+        int minDifference = Integer.MAX_VALUE;
+        int countThreshold = 0;
+
+        for (int i = 0; i < k; i++) {
+            if (arr[i] >= th) countThreshold++;
+        }
+
+        if (countThreshold >= m) {
+            minDifference = arr[k - 1] - arr[0];
+        }
+
+        for (int i = 1; i <= n - k; i++) {
+            
+            if (arr[i - 1] >= th) countThreshold--;
+
+           
+            if (arr[i + k - 1] >= th) countThreshold++;
+
+            
+            if (countThreshold >= m) {
+                minDifference = Math.min(minDifference, arr[i + k - 1] - arr[i]);
+            }
+        }
+
+        return (minDifference == Integer.MAX_VALUE) ? -1 : minDifference; 
+}
