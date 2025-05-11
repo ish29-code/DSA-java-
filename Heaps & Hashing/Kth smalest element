@@ -10,3 +10,22 @@ class Solution {
         return arr[k-1];
     }
 }
+
+class Solution {
+    public static int kthSmallest(int[] arr, int k) {
+        // Your code here
+        /*Arrays.sort(arr);
+        return arr[k-1];*/
+        PriorityQueue<Integer> minheap = new PriorityQueue<>();
+        for(int num : arr){
+            minheap.add(num);
+        }
+        
+        for(int i=0;i<k-1;i++){
+            minheap.remove();
+        }
+        
+        return minheap.remove();
+    }
+}
+
