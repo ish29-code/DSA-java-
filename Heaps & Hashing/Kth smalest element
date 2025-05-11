@@ -1,0 +1,12 @@
+Input: arr[] = [7, 10, 4, 3, 20, 15], k = 3
+Output: 7
+Explanation: 3rd smallest element in the given array is 7.
+
+
+class Solution {
+    public static int kthSmallest(int[] arr, int k) {
+        // Your code here
+        Arrays.sort(arr);
+        return arr[k-1];
+    }
+}
