@@ -1,0 +1,30 @@
+nput: arr[] = [ 1 ] and k = 1.
+Output: 2
+Explanation: Natural numbers are {1, 2, 3, 4, .... }. After removing {1}, we get {2, 3, 4, ...}. Now, 2-th smallest element = 2.
+
+Input: arr[] = [ 1, 3 ], k = 4.
+Output:  6
+Explanation: First 5 Natural number {1, 2, 3, 4, 5, 6,  .. }. After removing {1, 3}, we get {2, 4, 5, 6, ... }.Now, 4-th smallest element = 6.'
+
+
+class Solution{
+    public static Kthsmallest(int arr[],int k){
+          Set<Integer> removedno = new HashSet<>();
+          if(int num : arr){
+              removedno.add(num);
+          }
+
+          int num = 1,count = 0;
+          while(count<k){
+              if(!removedno.contains(num){
+                  count++;
+              }
+               if(count==k){
+                   return num;
+               }
+              num++;
+          }
+           return -1;//if valid not found
+          
+    }
+}
