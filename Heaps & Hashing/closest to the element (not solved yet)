@@ -1,0 +1,21 @@
+class Solution {
+    int[] printKClosest(int[] arr, int n, int k, int x) {
+        // code here
+        PriorityQueue<int[]> maxheap = new PriorityQueue<>((a,b)->b[1]==a[1]?b[0]-a[0]: b[1]-a[1]);
+        
+        for(int num : arr){
+            if(num!=x){
+                maxheap.add(new int[]{num,Math.abs(num-x)});
+                if(maxheap.size()>k){
+                    maxheap.remove();
+                }
+            }
+        }
+        
+        int result[] = new int[k];
+        for(int i=0;i<k;i++){
+            result[i] = maxheap.remove()[0];
+        }
+        Arrays.sort(result);
+        return result;
+    }
