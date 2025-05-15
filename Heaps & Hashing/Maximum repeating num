@@ -1,0 +1,24 @@
+Input: k = 3, arr[] = [2, 2, 1, 2]
+Output: 2
+Explanation: 2 is the most frequent element.
+
+class Solution {
+    int maxRepeating(int k, int[] arr) {
+        // code here
+        int feq[] = new int[k];
+        
+        for(int num : arr){
+            feq[num]++;//calculated feq
+        }
+        
+        int result=0,maxfeq=0;
+        
+        for(int i=0;i<k;i++){
+            if(feq[i]>maxfeq){
+                maxfeq = feq[i];
+                result = i;
+            }
+        }
+        return result;
+    }
+}
