@@ -1,0 +1,33 @@
+Input: "Chennai" -> "Bangalore"
+            "Bombay" -> "Delhi"
+             "Goa"    -> "Chennai"
+             "Delhi"  -> "Goa"
+Output: Bombay->Delhi, Delhi->Goa, Goa->Chennai, Chennai->Bangalore
+
+//0(N)
+
+class Solution{
+     public void finditinerary(Map<String,String>dataset){
+          String start = null;
+          Map<String,String> revmap = new HashMap<>();  
+
+          for(Map.Entry<String,String> entry : dataset.get()){
+               revmap.put(entry.getValue(),entry.getKey());
+          }
+          for(Map.Entry<String,String> entry : dataset.get()){
+               if(!revmap.containsKey(entry.getKey()){
+                    start = entry.getKey();
+                    break;
+               }
+          }
+          if(start == null){
+             return;
+          }
+          String to = dataset.get(start);
+          while(to!=null){
+              System.out.println(start + "--->" + to);
+              start = to;
+              to = dataset.get(start);
+          }
+     }
+}
