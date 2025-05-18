@@ -1,0 +1,48 @@
+Input: arr[] = [1 -> 2 -> 3, 4 -> 5, 5 -> 6, 7 -> 8]
+Output: 1 -> 2 -> 3 -> 4 -> 5 -> 5 -> 6 -> 7 -> 8
+Explanation:
+The arr[] has 4 sorted linked list of size 3, 2, 2, 2.
+1st list: 1 -> 2-> 3
+2nd list: 4 -> 5
+3rd list: 5 -> 6
+4th list: 7 -> 8
+The merged list will be:
+ 
+
+
+class Solution {
+    public ArrayList<Double> getMedian(int[] arr) {
+        ArrayList<Double> result = new ArrayList<>();
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder()); // Left half (Max Heap)
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(); // Right half (Min Heap)
+
+        for (int num : arr) {
+            insert(num, maxHeap, minHeap);
+            result.add(findMedian(maxHeap, minHeap));
+        }
+        
+        return result;
+    }
+
+    private void insert(int num, PriorityQueue<Integer> maxHeap, PriorityQueue<Integer> minHeap) {
+        if (maxHeap.isEmpty() || num <= maxHeap.peek()) {
+            maxHeap.offer(num);
+        } else {
+            minHeap.offer(num);
+        }
+
+        // Balance heaps
+        if (maxHeap.size() > minHeap.size() + 1) {
+            minHeap.offer(maxHeap.poll());
+        } else if (minHeap.size() > maxHeap.size()) {
+            maxHeap.offer(minHeap.poll());
+        }
+    }
+
+    private double findMedian(PriorityQueue<Integer> maxHeap, PriorityQueue<Integer> minHeap) {
+        if (maxHeap.size() == minHeap.size()) {
+            return (maxHeap.peek() + minHeap.peek()) / 2.0;
+        }
+        return maxHeap.peek();
+    }
+}
