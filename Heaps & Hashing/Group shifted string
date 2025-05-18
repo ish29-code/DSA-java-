@@ -1,0 +1,24 @@
+
+Input: arr = ["acd", "dfg", "wyz", "yab", "mop", "bdfh", "a", "x", "moqs"]
+Output: [["acd", "dfg", "wyz", "yab", "mop"], ["bdfh", "moqs"], ["a", "x"]] 
+Explanation: All shifted strings are grouped together.
+
+
+class Solution {
+    public ArrayList<ArrayList<String>> groupShiftedString(String[] arr) {
+        // code here
+       Map<String,ArrayList<String>> map = new HashMap<>();
+       for(String s : arr){
+           String key = getshiftvalues(s);
+           map.computeIfAbsent(key,k->new ArrayList<>()).add(s);
+       }
+       return new ArrayList<>(map.values());
+    }
+    public String getshiftvalues(String s){
+        StringBuilder key = new StringBuilder();
+        for(int i=1;i<s.length();i++){
+            key.append((s.charAt(i)-s.charAt(i-1)+26)%26).append(",");
+        }
+        return key.toString();
+    }
+}
