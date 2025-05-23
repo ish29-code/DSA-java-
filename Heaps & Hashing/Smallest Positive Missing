@@ -1,0 +1,31 @@
+Input: arr[] = [2, -3, 4, 1, 1, 7]
+Output: 3
+Explanation: Smallest positive missing number is 3.
+
+
+class Solution {
+    // Function to find the smallest positive number missing from the array.
+    public int missingNumber(int[] arr) {
+        // Your code here
+        PriorityQueue<Integer> minheap = new PriorityQueue<>();
+        HashSet<Integer> set = new HashSet<>();
+        
+        for(int num : arr){
+            if(num>0 && !set.contains(num)){
+                minheap.add(num);
+                set.add(num);
+            }
+        }
+        
+        int missing = 1;
+        while(!minheap.isEmpty()){
+            if(minheap.remove()==missing){
+                missing++;
+            }
+            else{
+                return missing;
+            }
+        }
+        return missing;
+    }
+}
