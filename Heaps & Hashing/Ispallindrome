@@ -1,0 +1,45 @@
+import java.util.PriorityQueue;
+import java.util.Collections;
+
+public class StreamPalindromeChecker {
+    private PriorityQueue<Character> maxHeap;
+    private PriorityQueue<Character> minHeap;
+
+    public StreamPalindromeChecker() {
+        maxHeap = new PriorityQueue<>(Collections.reverseOrder()); // Left half
+        minHeap = new PriorityQueue<>(); // Right half
+    }
+
+    public void addCharacter(char c) {
+        if (maxHeap.isEmpty() || c <= maxHeap.peek()) {
+            maxHeap.offer(c);
+        } else {
+            minHeap.offer(c);
+        }
+
+        balanceHeaps();
+    }
+
+    private void balanceHeaps() {
+        if (maxHeap.size() > minHeap.size() + 1) {
+            minHeap.offer(maxHeap.poll());
+        } else if (minHeap.size() > maxHeap.size()) {
+            maxHeap.offer(minHeap.poll());
+        }
+    }
+
+    public boolean isPalindrome() {
+        return maxHeap.equals(minHeap);
+    }
+
+    public static void main(String[] args) {
+        StreamPalindromeChecker checker = new StreamPalindromeChecker();
+        String stream = "racecar"; // Example palindrome
+
+        for (char c : stream.toCharArray()) {
+            checker.addCharacter(c);
+        }
+
+        System.out.println("Is the stream a palindrome? " + checker.isPalindrome());
+    }
+}
