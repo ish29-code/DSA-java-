@@ -1,0 +1,25 @@
+Input: arr[] = [1, 2, 3]
+Output: 10
+Explanation: [1, 2, 3] is a subarray of length 3 with distinct elements. [1, 2], [2, 3] are 2 subarray of length 2 with distinct elements. Total length of lengths two = 2 + 2 = 4  3 subarrays of length 1 with distinct element. Sum of lengths = 3 + 4 + 3 = 10
+
+class Solution {
+    public int sumoflength(int[] arr) {
+        final int MOD = 1000000007;
+        HashSet<Integer> set = new HashSet<>();
+        int j = 0, sum = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            while (j < arr.length && !set.contains(arr[j])) {
+                set.add(arr[j]);
+                j++;
+            }
+
+            // Use mathematical formula to compute sum efficiently
+            sum = (sum + ((j - i) * (j - i + 1) / 2)) % MOD;
+
+            set.remove(arr[i]); // Move left pointer forward
+        }
+
+        return sum;
+    }
+}
