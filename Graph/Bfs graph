@@ -1,0 +1,38 @@
+Input: adj[][] = [[2, 3, 1], [0], [0, 4], [0], [2]]
+
+Output: [0, 2, 3, 1, 4]
+Explanation: Starting from 0, the BFS traversal will follow these steps: 
+Visit 0 → Output: 0 
+Visit 2 (first neighbor of 0) → Output: 0, 2 
+Visit 3 (next neighbor of 0) → Output: 0, 2, 3 
+Visit 1 (next neighbor of 0) → Output: 0, 2, 3, 
+Visit 4 (neighbor of 2) → Final Output: 0, 2, 3, 1, 4
+
+
+
+class Solution {
+    // Function to return Breadth First Search Traversal of given graph.
+    public ArrayList<Integer> bfs(ArrayList<ArrayList<Integer>> adj) {
+        // code here
+        int v = adj.size();
+        ArrayList<Integer> bfsresult = new ArrayList<>();
+        boolean visited[] = new boolean[v];
+        Queue<Integer> q = new LinkedList<>();
+        
+        visited[0] = true;
+        q.add(0);
+        
+        while(!q.isEmpty()){
+            int node = q.remove();
+            bfsresult.add(node);
+            
+            for(int neighbour : adj.get(node)){
+                if(!visited[neighbour]){
+                    visited[neighbour] = true;
+                    q.add(neighbour);
+                }
+            }
+        }
+        return bfsresult;
+    }
+}
