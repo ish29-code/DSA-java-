@@ -1,0 +1,58 @@
+Input: image[][] = [[1, 1, 1, 0], [0, 1, 1, 1], [1, 0, 1, 1]], sr = 1, sc = 2, newColor = 2
+
+Output: [[2, 2, 2, 0], [0, 2, 2, 2], [1, 0, 2, 2]]
+
+Explanation: Starting from pixel (1, 2) with value 1, flood fill updates all connected pixels (up, down, left, right) with value 1 to 2, resulting in [[2, 2, 2, 0], [0, 2, 2, 2], [1, 0, 2, 2]].
+
+
+//DFS
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        // Code here
+        int originalcolor = image[sr][sc];
+        if(originalcolor!=newColor){
+            dfs(image,sr,sc,originalcolor,newColor);
+        }
+        return image;
+    }
+    public void dfs(int image[][],int x,int y,int originalcolor,int newColor){
+        if(x<0 || x>=image.length || y<0 || y>=image[0].length || image[x][y]!=originalcolor){
+            return;
+        }
+        image[x][y] = newColor;
+        
+        dfs(image,x+1,y,originalcolor,newColor);
+        dfs(image,x-1,y,originalcolor,newColor);
+        dfs(image,x,y+1,originalcolor,newColor);
+        dfs(image,x,y-1,originalcolor,newColor);
+    }
+}
+
+//BFS
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int originalcolor = image[sr][sc];
+        if(originalcolor==color){
+            return image;
+        }
+
+        int directions[][] = {{1,0},{-1,0},{0,1},{0,-1}};
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{sr,sc});
+
+        while(!q.isEmpty()){
+            int pixel[] = q.remove();
+            int x = pixel[0],y=pixel[1];
+
+            if(x<0 || x>=image.length || y<0 || y>=image[0].length || image[x][y] != originalcolor){
+                continue;
+            }
+
+            image[x][y] = color;
+            for(int[] dir : directions){
+                q.add(new int[]{x+dir[0],y+dir[1]});
+            }
+        }
+        return image;
+    }
+}
