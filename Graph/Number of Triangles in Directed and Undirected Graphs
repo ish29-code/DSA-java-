@@ -1,0 +1,114 @@
+import java.io.*;
+
+class GFG {
+
+    int V = 4;
+
+    int countTriangle(int graph[][], 
+                      boolean isDirected)
+   {
+       int count_Triangle = 0;
+      
+       for (int i = 0; i < V; i++)
+       {
+           for (int j = 0; j < V; j++)
+           {
+               for (int k=0; k<V; k++)
+               {
+         
+                  if (graph[i][j] == 1 && 
+                      graph[j][k] == 1 && 
+                      graph[k][i] == 1)
+                      count_Triangle++;
+               }
+           }
+       }
+ 
+       if(isDirected == true)
+       {
+           count_Triangle /= 3;
+       }
+       else
+       {
+           count_Triangle /= 6;
+       }
+       return count_Triangle;
+   }
+
+    public static void main(String args[])
+   {
+       
+       int graph[][] = {{0, 1, 1, 0},
+                        {1, 0, 1, 1},
+                        {1, 1, 0, 1},
+                        {0, 1, 1, 0}
+                       };
+    
+       int digraph[][] = { {0, 0, 1, 0},
+                           {1, 0, 0, 1},
+                           {0, 1, 0, 0},
+                           {0, 0, 1, 0}
+                         };
+      
+      GFG obj = new GFG();
+ 
+    System.out.println("The Number of triangles "+
+                       "in undirected graph : " +
+                        obj.countTriangle(graph, false));
+
+    System.out.println("\n\nThe Number of triangles"+
+                       " in directed graph : "+ 
+                       obj.countTriangle(digraph, true));
+
+   }
+}
+
+// This code is contributed by Anshika Goyal.
+
+
+
+
+import java.util.*;
+
+class Graph {
+    private Map<Integer, Set<Integer>> adjList;
+
+    public Graph() {
+        adjList = new HashMap<>();
+    }
+
+    public void addEdge(int u, int v) {
+        adjList.putIfAbsent(u, new HashSet<>());
+        adjList.putIfAbsent(v, new HashSet<>());
+        adjList.get(u).add(v);
+        adjList.get(v).add(u); // Remove this line for directed graphs
+    }
+
+    public int countTriangles() {
+        int count = 0;
+
+        for (int u : adjList.keySet()) {
+            for (int v : adjList.get(u)) {
+                for (int w : adjList.get(v)) {
+                    if (adjList.get(w).contains(u)) {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count / 6; // Divide by 6 for undirected graphs, 3 for directed graphs
+    }
+
+    public static void main(String[] args) {
+        Graph g = new Graph();
+        g.addEdge(1, 2);
+        g.addEdge(2, 3);
+        g.addEdge(3, 1);
+        g.addEdge(3, 4);
+        g.addEdge(4, 5);
+        g.addEdge(5, 3);
+
+        System.out.println("Number of triangles: " + g.countTriangles());
+    }
+}
