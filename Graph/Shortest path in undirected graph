@@ -1,0 +1,30 @@
+Input: adj[][] = [[1, 3], [0, 2], [1, 6], [0, 4], [3, 5], [4, 6], [2, 5, 7, 8], [6, 8], [7, 6]], src=0
+Output: [0, 1, 2, 1, 2, 3, 3, 4, 4]
+
+
+
+class Solution {
+    // Function to find the shortest path from a source node to all other nodes
+    public int[] shortestPath(ArrayList<ArrayList<Integer>> adj, int src) {
+        // code here
+        int n = adj.size();
+        int dist[] = new int[n];
+        Arrays.fill(dist,-1);
+        dist[src] = 0;
+        
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(src);
+        
+        while(!q.isEmpty()){
+            int node = q.remove();
+            
+            for(int neighbour : adj.get(node)){
+                if(dist[neighbour]==-1){
+                    dist[neighbour] = dist[node]+1;
+                    q.add(neighbour);
+                }
+            }
+        }
+        return dist;
+    }
+}
