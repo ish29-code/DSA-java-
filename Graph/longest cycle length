@@ -1,0 +1,33 @@
+Input: edges = [3,3,4,2,3]
+Output: 3
+Explanation: The longest cycle in the graph is the cycle: 2 -> 4 -> 3 -> 2.
+The length of this cycle is 3, so 3 is returned.
+
+class Solution {
+    public int longestCycle(int[] edges) {
+        int n = edges.length;
+        boolean visited[] = new boolean[n];
+        int longestCycle = -1;
+
+        for(int i=0;i<n;i++){
+            if(visited[i]){
+                continue;
+            }
+            Map<Integer,Integer> stepmap = new HashMap<>();
+            int step = 0,current = i;
+
+            while(current!=-1 && !visited[current]){
+                stepmap.put(current,step++);
+                visited[current] = true;
+                current = edges[current];
+
+                if(stepmap.containsKey(current)){
+                    longestCycle = Math.max(longestCycle,step - stepmap.get(current));
+                    break;
+                }
+            }            
+            
+        }
+        return longestCycle;
+    }
+}
