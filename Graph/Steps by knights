@@ -1,0 +1,44 @@
+Input: n = 3, knightPos[] = [3, 3], targetPos[]= [1, 2]
+Output: 1
+Explanation:
+Knight takes 1 step to reach from 
+(3, 3) to (1 ,2).
+
+class Solution {
+    private int dx[] = {2,2,-2,-2,1,1,-1,-1};
+    private int dy[] = {1,-1,1,-1,2,-2,2,-2};
+    public int minStepToReachTarget(int knightPos[], int targetPos[], int n) {
+        // Code here
+        int startX = knightPos[0]-1,startY = knightPos[1]-1;
+        int endX = targetPos[0]-1,endY = targetPos[1]-1;
+        
+        return bfs(startX,startY,endX,endY,n);
+    }
+    public int bfs(int startX,int startY,int endX,int endY,int n){
+        boolean visited[][] = new boolean[n][n];
+        Queue<int[]> q = new LinkedList<>();
+        
+        q.add(new int[]{startX,startY,0});
+        visited[startX][startY] = true;
+        
+        while(!q.isEmpty()){
+            int curr[] = q.remove();
+            int x=curr[0],y=curr[1],dist=curr[2];
+            
+            if(x==endX && y==endY){
+                return dist;
+            }
+            
+            for(int i=0;i<8;i++){
+                int newX = x+dx[i];
+                int newY = y+dy[i];
+                
+                if(newX>=0 && newX<n && newY>=0 && newY<n && !visited[newX][newY]){
+                    visited[newX][newY] = true;
+                    q.add(new int[]{newX,newY,dist+1});
+                }
+            }
+        }
+        return -1;
+    }
+}
