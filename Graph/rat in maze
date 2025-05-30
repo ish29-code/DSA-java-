@@ -1,0 +1,74 @@
+Input: mat[][] = [[1, 0, 0, 0], [1, 1, 0, 1], [1, 1, 0, 0], [0, 1, 1, 1]]
+Output: ["DDRDRR", "DRDDRR"]
+Explanation: The rat can reach the destination at (3, 3) from (0, 0) by two paths - DRDDRR and DDRDRR, when printed in sorted order we get DDRDRR DRDDRR.
+
+class Solution {
+    
+    // Function to find all possible paths
+    public ArrayList<String> ratInMaze(int[][] maze) {
+        Set<String> paths = new TreeSet<>();
+        
+        int[][] visited = new int[maze.length][maze.length];
+        
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze.length; j++) {
+                visited[i][j] = -1;
+            }
+        }
+        
+        ratInMaze(maze, visited, 0, 0, new StringBuilder(""), paths);
+        
+        ArrayList<String> result = new ArrayList<>();
+        
+        for (String path : paths) {
+            result.add(path);
+        }
+        
+        return result;
+    }
+    
+    private void ratInMaze(int[][] maze, int[][] visited, int r, int c,
+                            StringBuilder sb, Set<String> paths) {
+        
+        int n = maze.length;
+        
+        if (!isValidIndex(r, c, n)) {
+            return;
+        }
+        
+        if (maze[r][c] == 0) {
+            return;
+        }
+        
+        if (visited[r][c] == 1) {
+            return;
+        }
+        
+        visited[r][c] = 1;
+        
+        if (r == n - 1 && c == n - 1) {
+            paths.add(sb.toString());
+            visited[r][c] = -1;
+            return;
+        }
+        
+        ratInMaze(maze, visited, r + 1, c, sb.append('D'), paths);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        ratInMaze(maze, visited, r - 1, c, sb.append('U'), paths);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        ratInMaze(maze, visited, r, c + 1, sb.append('R'), paths);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        ratInMaze(maze, visited, r, c - 1, sb.append('L'), paths);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        visited[r][c] = -1;
+    }
+    
+    private boolean isValidIndex(int r, int c, int n) {
+        return 0 <= r && r < n && 0 <= c && c < n;
+    }
+
+}
