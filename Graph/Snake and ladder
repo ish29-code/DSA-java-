@@ -1,0 +1,111 @@
+Input: board = [[-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1],[-1,35,-1,-1,13,-1],[-1,-1,-1,-1,-1,-1],[-1,15,-1,-1,-1,-1]]
+Output: 4
+Explanation: 
+In the beginning, you start at square 1 (at row 5, column 0).
+You decide to move to square 2 and must take the ladder to square 15.
+You then decide to move to square 17 and must take the snake to square 13.
+You then decide to move to square 14 and must take the ladder to square 35.
+You then decide to move to square 36, ending the game.
+This is the lowest possible number of moves to reach the last square, so return 4.
+
+
+class Solution {
+    public int snakesAndLadders(int[][] board) {
+        int n = board.length;
+        int[] flattenboard = new int[n * n + 1];
+
+        boolean lefttoright = true;
+        int idx = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            if (lefttoright) {
+                for (int j = 0; j < n; j++) {
+                    flattenboard[idx++] = board[i][j];
+                }
+            } else {
+                for (int j = n - 1; j >= 0; j--) {
+                    flattenboard[idx++] = board[i][j];
+                }
+            }
+            lefttoright = !lefttoright;
+        }
+
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{1, 0});  
+        boolean[] visited = new boolean[n * n + 1];
+        visited[1] = true;
+
+        while (!q.isEmpty()) {
+            int[] curr = q.poll();
+            int pos = curr[0], moves = curr[1];
+
+            if (pos == n * n) {
+                return moves;
+            }
+
+            for (int dice = 1; dice <= 6; dice++) {  
+                int newpos = pos + dice;
+                if (newpos > n * n) break;  
+
+                if (flattenboard[newpos] != -1) {  
+                    newpos = flattenboard[newpos];
+                }
+
+                if (!visited[newpos]) {
+                    visited[newpos] = true;
+                    q.add(new int[]{newpos, moves + 1});
+                }
+            }
+        }
+
+        return -1;  
+    }    
+}
+
+
+
+class Solution {
+    static int minThrow(int N, int arr[]) {
+        // code here
+        int boardsize = 30;
+        int board[] = new int[boardsize+1];
+        
+        for(int i=1;i<=boardsize;i++){
+            board[i] = i;
+        }
+        for(int i=0;i<2*N;i+=2){
+            if (i + 1 < arr.length) { // Ensure valid index access
+                 board[arr[i]] = arr[i + 1];
+            }
+
+        }
+        
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{1,0});
+        boolean visited[] = new boolean[boardsize+1];
+        visited[1] = true;
+        
+        while(!q.isEmpty()){
+            int node[] = q.remove();
+            int pos = node[0],moves=node[1];
+            
+            if(pos==boardsize){
+                return moves;
+            }
+            
+            for(int dice=1;dice<=6;dice++){
+                int newpos = pos+dice;
+                
+                if(newpos>boardsize){
+                    break;
+                }
+                newpos = board[newpos];
+                
+                if(!visited[newpos]){
+                    visited[newpos] = true;
+                    q.add(new int[]{newpos,moves+1});
+                }
+            }
+        }
+        return -1;
+    }
+}
