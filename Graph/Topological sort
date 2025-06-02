@@ -1,0 +1,46 @@
+Input: V = 4, E = 3, edges[][] = [[3, 0], [1, 0], [2, 0]]
+
+Output: true
+Explanation: The output true denotes that the order is valid. Few valid Topological orders for the given graph are:
+[3, 2, 1, 0]
+[1, 2, 3, 0]
+[2, 3, 1, 0]
+
+
+class Solution {
+    public static ArrayList<Integer> topoSort(int V, int[][] edges) {
+        // code here
+        ArrayList<Integer> ans = new ArrayList<>();
+        int indegree[] = new int[V];
+        Map<Integer,Set<Integer>> graph = new HashMap<>();
+        
+        for(int i=0;i<V;i++){
+            graph.put(i,new HashSet<>());
+        }
+        
+        for(int edge[] : edges){
+            graph.get(edge[0]).add(edge[1]);
+            indegree[edge[1]]++;
+        }
+        
+        Queue<Integer> q = new LinkedList<>();
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
+                q.add(i);
+            }
+        }
+        
+        while(!q.isEmpty()){
+            int node = q.remove();
+            ans.add(node);
+            
+            for(int neighbour : graph.getOrDefault(node,new HashSet<>())){
+                indegree[neighbour]--;
+                if(indegree[neighbour]==0){
+                    q.add(neighbour);
+                }
+            }
+        }
+        return ans;
+    }
+}
