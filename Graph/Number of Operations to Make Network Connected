@@ -1,0 +1,49 @@
+Input: n = 4, connections = [[0,1],[0,2],[1,2]]
+Output: 1
+Explanation: Remove cable between computer 1 and 2 and place between computers 1 and 3.
+
+
+class Solution {
+
+    public int Solve(int n, int[][] edge) {
+        // Code here
+        if(edge.length < n-1){
+            return -1;
+        }
+        List<Integer>[] graph = new ArrayList[n];
+        for(int i=0;i<n;i++){
+            graph[i] = new ArrayList<>();
+        }
+        for(int edges[] : edge){
+            graph[edges[0]].add(edges[1]);
+            graph[edges[1]].add(edges[0]);
+        }
+        
+        boolean visited[] = new boolean[n];
+        int components = 0;
+        
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                dfs(graph,i,visited);
+                components++;
+            }
+        }
+        return components - 1;
+    }
+    public void dfs(List<Integer>[] graph,int node,boolean visited[]){
+        Stack<Integer> s = new Stack<>();
+        s.push(node);
+        visited[node] = true;
+        
+        while(!s.isEmpty()){
+            int current = s.pop();
+            
+            for(int neighbour : graph[current]){
+                if(!visited[neighbour]){
+                    visited[neighbour] = true;
+                    s.push(neighbour);
+                }
+            }
+        }
+    }
+}
