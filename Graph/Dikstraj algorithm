@@ -1,0 +1,47 @@
+Input: V = 3, edges[][] = [[0, 1, 1], [1, 2, 3], [0, 2, 6]], src = 2
+Output: [4, 3, 0]
+Explanation:
+
+Shortest Paths:
+For 2 to 0 minimum distance will be 4. By following path 2 -> 1 -> 0
+For 2 to 1 minimum distance will be 3. By following path 2 -> 1
+For 2 to 2 minimum distance will be 0. By following path 2 -> 2
+
+
+
+class Solution {
+    public int[] dijkstra(int V, int[][] edges, int src) {
+        // code here
+        List<List<int[]>> adj = new ArrayList<>();
+        for(int i=0;i<V;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int edge[] : edges){
+            adj.get(edge[0]).add(new int[]{edge[1],edge[2]});
+            adj.get(edge[1]).add(new int[]{edge[0],edge[2]});
+        }
+        
+        int dist[] = new int[V];
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        dist[src] = 0;
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a->a[1]));
+        pq.add(new int[]{src,0});
+        
+        while(!pq.isEmpty()){
+            int curr[] = pq.remove();
+            int u = curr[0];
+            
+            for(int neighbour[] : adj.get(u)){
+                int v = neighbour[0];
+                int weight = neighbour[1];
+                
+                if(dist[u]+weight<dist[v]){
+                    dist[v] = dist[u]+weight;
+                    pq.add(new int[]{v,dist[v]});
+                }
+            }
+        }
+        return dist;
+    }
+}
