@@ -1,0 +1,41 @@
+Input: numCourses = 2, prerequisites = [[1,0]]
+Output: [0,1]
+Explanation: There are a total of 2 courses to take. To take course 1 you should have finished course 0. So the correct course order is [0,1].
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> adj = new ArrayList<>();
+        int ans[] = new int[numCourses];
+        int indegree[] = new int[numCourses];
+
+        for(int i=0;i<numCourses;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int edge[] : prerequisites){
+            adj.get(edge[1]).add(edge[0]);
+            indegree[edge[0]]++;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for(int i=0;i<numCourses;i++){
+            if(indegree[i]==0){
+                q.add(i);
+            }
+        }
+
+        int index = 0,count=0;
+        while(!q.isEmpty()){
+            int node = q.remove();
+            ans[index++] = node;
+            count++;
+
+            for(int neighbour : adj.get(node)){
+                indegree[neighbour]--;
+                if(indegree[neighbour]==0){
+                    q.add(neighbour);
+                }
+            }
+        }
+        return count == numCourses? ans : new int[0];
+    }
+}
