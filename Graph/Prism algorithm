@@ -1,0 +1,55 @@
+Input:
+3 3
+0 1 5
+1 2 3
+0 2 1
+ 
+Output: 4
+Explanation:
+
+The Spanning Tree resulting in a weight
+of 4 is shown above.
+
+
+class Solution {
+    static int spanningTree(int V, int E, List<List<int[]>>adj) {
+        // Code Here.
+        /*List<List<int[]>> graph = new ArrayList<>();
+        for(int i=0;i<V;i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(List<int[]>edgeList : adj){
+            for(int edge[] : edgeList){
+                graph.get(edge[0]).add(new int[]{edge[1],edge[2]});
+                graph.get(edge[1]).add(new int[]{edge[0],edge[2]});
+            }    
+        }*/    
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a->a[1]));
+        boolean visited[] = new boolean[V];
+        pq.add(new int[]{0,0});//start,weight
+        int mtweight=0;
+        int edgeused=0;
+    
+        
+        while(!pq.isEmpty() && edgeused<V){
+            int node[] = pq.remove();
+            int current = node[0],weight=node[1];
+            
+            if(visited[current]){
+                continue;
+            }
+            visited[current] = true;
+            mtweight += weight;
+            edgeused++;
+            
+            for(int neighbour[] : adj.get(current)){
+                if(!visited[neighbour[0]]){
+                    pq.add(new int[]{neighbour[0],neighbour[1]});
+                }
+            }
+        }
+        return mtweight;
+    }
+}
