@@ -1,0 +1,51 @@
+Input: V = 4, edges[][] = [[0, 1], [1, 3], [2, 3], [3, 0], [0, 2]], m = 3
+Output: true
+Explanation: It is possible to color the given graph using 3 colors, for example, one of the possible ways vertices can be colored as follows:
+
+Vertex 0: Color 1
+Vertex 1: Color 2
+Vertex 2: Color 2
+Vertex 3: Color 3
+
+
+class Solution {
+    boolean graphColoring(int v, int[][] edges, int m) {
+        // code here
+        List<List<Integer>>graph = new ArrayList<>();
+        
+        for(int i=0;i<v;i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int edge[] : edges){
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]);
+        }
+        int colors[] = new int[v];
+        
+        return solve(0,graph,colors,v,m);
+    }
+    boolean solve(int node,List<List<Integer>>graph,int colors[],int v,int m){
+        if(node==v){
+            return true;
+        }
+        for(int col=1;col<=m;col++){
+            if(issafe(node,graph,colors,col,v)){
+                colors[node]=col;//assining
+                if(solve(node+1,graph,colors,v,m)){
+                    return true;
+                }
+                colors[node]=0;//backtracking
+            }
+        }
+        return false;
+    }
+    boolean issafe(int node,List<List<Integer>>graph,int colors[],int col,int v){
+        for(int neighbour : graph.get(node)){
+            if(colors[neighbour] == col){
+                return false;
+            }
+        }
+        return true;
+    }
+}
