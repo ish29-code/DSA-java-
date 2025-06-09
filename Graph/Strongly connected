@@ -1,0 +1,59 @@
+Input: adj[][] = [[2, 3], [0], [1], [4], []]
+
+Output: 3
+Explanation: We can clearly see that there are 3 Strongly Connected Components in the Graph.
+
+
+class Solution {
+    // Function to find number of strongly connected components in the graph.
+    public int kosaraju(ArrayList<ArrayList<Integer>> adj) {
+        // code here
+        int v = adj.size();
+        Stack<Integer> s = new Stack<>();
+        boolean visited[] = new boolean[v];
+        
+        for(int i=0;i<v;i++){
+            if(!visited[i]){
+                dfs(i,adj,visited,s);
+            }
+        }
+        
+        ArrayList<ArrayList<Integer>> revadj = reverseadj(adj,v);
+        
+        Arrays.fill(visited,false);
+        int sccount=0;
+        
+        while(!s.isEmpty()){
+            int node = s.pop();
+            if(!visited[node]){
+                sccount++;
+                dfs(node,revadj,visited,null);
+            }
+        }
+        return sccount;
+    }
+    public void dfs(int node,ArrayList<ArrayList<Integer>> adj,boolean visited[],Stack<Integer> s){
+        visited[node] = true;
+        for(int neighbour : adj.get(node)){
+            if(!visited[neighbour]){
+                dfs(neighbour,adj,visited,s);
+            }
+        }
+        if(s!=null){
+            s.push(node);
+        }
+    }
+    public ArrayList<ArrayList<Integer>> reverseadj(ArrayList<ArrayList<Integer>> adj,int v){
+        ArrayList<ArrayList<Integer>> revadj = new ArrayList<>();
+        for(int i=0;i<v;i++){
+            revadj.add(new ArrayList<>());
+        }
+        
+        for(int i=0;i<v;i++){
+            for(int neighbour : adj.get(i)){
+                revadj.get(neighbour).add(i);
+            }
+        }
+        return revadj;
+    }
+}
