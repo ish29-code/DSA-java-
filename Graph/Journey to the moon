@@ -1,0 +1,67 @@
+Sample Input 1
+
+4 1
+0 2
+Sample Output 1
+
+5
+Explanation 1
+
+Persons numbered  belong to the same country, but persons  and  don't share countries with anyone else. The UN has  ways of choosing a pair:
+
+
+
+
+
+public static int journeyToMoon(int n, List<List<Integer>> astronaut) {
+    // Write your code here
+       List<List<Integer>> adj = new ArrayList<>();
+       for(int i=0;i<n;i++){
+        adj.add(new ArrayList<Integer>());
+       }
+       
+       for(List<Integer>edge : astronaut){
+        adj.get(edge.get(0)).add(edge.get(1));
+        adj.get(edge.get(1)).add(edge.get(0));
+       }
+       
+       boolean visited[] = new boolean[n];
+       List<Integer> componentssize = new ArrayList<>();
+       
+       for(int i=0;i<n;i++){
+        if(!visited[i]){
+            int size = dfs(i,adj,visited);
+            componentssize.add(size);
+        }
+       }
+       
+       long totpair = (long) n*(n+1)/2;
+       for(int size : componentssize){
+        totpair -= (long) size*(size+1)/2;
+       }
+       return (int) totpair;
+       
+    }
+    
+    public static int dfs(int node,List<List<Integer>>adj,boolean visited[]){
+        Stack<Integer> s = new Stack<>();
+        s.push(node);
+        int size=0;
+        
+        while(!s.isEmpty()){
+            int curr = s.pop();
+            if(!visited[curr]){
+                visited[curr] = true;
+                size++;
+                
+                for(int neighbour : adj.get(curr)){
+                    if(!visited[neighbour]){
+                        s.push(neighbour);
+                    }
+                }
+            }
+        }
+        return size;
+    }
+
+}
