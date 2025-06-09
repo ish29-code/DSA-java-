@@ -1,0 +1,46 @@
+Input:
+V = 4 , E = 3 and K = 8
+A[] = [0, 1, 5, 1, 2, 1, 2, 3, 1]
+Output: 0
+Explanation:
+There exists no path which has a distance 
+of 8. 
+
+
+
+class Solution {
+    boolean dfs(List<List<int[]>> adj,boolean visited[],int u,int K,int currdist){
+        if(currdist>=K){
+            return true;
+        }
+        
+        visited[u] = true;
+        
+        for(int neighbour[] : adj.get(u)){
+            int v = neighbour[0],dist=neighbour[1];
+            if(!visited[v]){
+                if(dfs(adj,visited,v,K,currdist+dist)){
+                    return true;
+                }
+            }
+        }
+        visited[u] = false;
+        return false;
+    }
+
+    boolean pathMoreThanK(int V, int E, int K, int[] A) {
+        // Code Here
+        List<List<int[]>> adj = new ArrayList<>();
+        for(int i=0;i<V;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int i=0;i+2<A.length;i+=3){
+            int u = A[i],v = A[i+1],w=A[i+2];
+            adj.get(u).add(new int[]{v,w});
+            adj.get(v).add(new int[]{u,w});
+        }
+        
+       boolean visited[] = new boolean[V];
+       return dfs(adj,visited,0,K,0);
+    }
+}
