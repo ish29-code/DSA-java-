@@ -1,0 +1,48 @@
+Input: n = 3, m = 2, s = 0, edges[] = [[0,2,1],[0,1,1]]
+Output: distance[] = [0,1,1]
+Explanation: The shortest distance of vertex 1 from 0 is 1 and that of two is also 1.
+
+
+
+class Solution {
+    public static int[] maximumDistance(int v, int e, int src, int[][] edges) {
+        // code here
+        int indegree[] = new int[v];
+        int dist[] = new int[v];
+        Arrays.fill(dist,Integer.MIN_VALUE);
+        dist[src] = 0;
+        
+        List<List<int[]>> adj = new ArrayList<>();
+        for(int i=0;i<v;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int edge[] : edges){
+            adj.get(edge[0]).add(new int[]{edge[1],edge[2]});
+            indegree[edge[1]]++;
+        }
+        
+        Queue<Integer> q = new LinkedList<>();
+        for(int i=0;i<v;i++){
+            if(indegree[i]==0){
+                q.add(i);
+            }
+        }
+        
+        while(!q.isEmpty()){
+            int curr = q.remove();
+            
+            for(int neighbour[] : adj.get(curr)){
+                int next = neighbour[0],weight=neighbour[1];
+                
+                if(dist[curr]!=Integer.MIN_VALUE){
+                    dist[next] = Math.max(dist[next],dist[curr]+weight);
+                }
+                indegree[next]--;
+                if(indegree[next]==0){
+                    q.add(next);
+                }
+            }
+        }
+        return dist;
+    }
+}
