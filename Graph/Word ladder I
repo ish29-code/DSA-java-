@@ -1,0 +1,49 @@
+wordList = {"des","der","dfr","dgt","dfs"}
+startWord = "der", targetWord= "dfs",
+Output:
+3
+Explanation:
+The length of the smallest transformation
+sequence from "der" to "dfs" is 3
+i,e "der" -> "dfr" -> "dfs".
+
+
+class Solution {
+    public int wordLadderLength(String startWord, String targetWord,
+                                String[] wordList) {
+        // Code here
+        Set<String> wordset = new HashSet<>(Arrays.asList(wordList));
+        if(!wordset.contains(targetWord)){
+            return 0;
+        }
+        
+        Queue<String> q = new LinkedList<>();
+        q.add(startWord);
+        int level=1;
+        
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i=0;i<size;i++){
+                String word = q.remove();
+                if(word.equals(targetWord)){
+                    return level;
+                }
+                
+                for(int j=0;j<word.length();j++){
+                    char chars[] = word.toCharArray();
+                    for(char c='a';c<='z';c++){
+                        chars[j] = c;
+                        
+                        String newword = new String(chars);
+                        if(wordset.contains(newword)){
+                            q.add(newword);
+                            wordset.remove(newword);
+                        }
+                    }
+                }
+            }
+            level++;
+        }
+        return 0;
+    }
+}
