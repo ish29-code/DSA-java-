@@ -1,0 +1,47 @@
+Input: V = 3, E = 3, edges[][] = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]
+
+Output: 4
+Explanation:
+
+The Spanning Tree resulting in a weight of 4 is shown above.
+
+
+
+class Solution {
+    static int kruskalsMST(int V, int[][] edges) {
+        // code here
+        List<List<int[]>> adj = new ArrayList<>();
+        for(int i=0;i<V;i++){
+            adj.add(new ArrayList<>());
+        }
+        
+        for(int edge[] : edges){
+            adj.get(edge[0]).add(new int[]{edge[1],edge[2]});
+            adj.get(edge[1]).add(new int[]{edge[0],edge[2]});
+        }
+        
+        PriorityQueue<int[]> q = new PriorityQueue<>(Comparator.comparing(a->a[1]));
+        q.add(new int[]{0,0});//node,weight
+        int mstweight=0,count=0;
+        boolean visited[] = new boolean[V];
+        
+        while(!q.isEmpty() && count<V){
+            int node[] = q.remove();
+            int u=node[0],weight=node[1];
+            
+            if(visited[u]){
+                continue;
+            }
+            visited[u]=true;
+            mstweight += weight;
+            count++;
+            
+            for(int neighbour[] : adj.get(u)){
+                if(!visited[neighbour[0]]){
+                    q.add(neighbour);
+                }
+            }
+        }
+        return count==V ? mstweight : -1;
+    }
+}
