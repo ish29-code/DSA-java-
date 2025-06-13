@@ -1,0 +1,57 @@
+public class TwoCliquesEasy {
+    static int V = 5;  // Number of vertices
+
+    public static boolean isTwoCliques(int[][] G) {
+        int[][] comp = new int[V][V];
+
+        // Step 1: Build complement graph
+        for (int i = 0; i < V; i++)
+            for (int j = 0; j < V; j++)
+                if (i != j)
+                    comp[i][j] = (G[i][j] == 1) ? 0 : 1;
+
+        // Step 2: Check if it's bipartite
+        return isBipartite(comp);
+    }
+
+    public static boolean isBipartite(int[][] graph) {
+        int[] color = new int[V];
+        java.util.Arrays.fill(color, -1);
+        java.util.Queue<Integer> queue = new java.util.LinkedList<>();
+
+        for (int start = 0; start < V; start++) {
+            if (color[start] == -1) {
+                color[start] = 0;
+                queue.add(start);
+
+                while (!queue.isEmpty()) {
+                    int u = queue.poll();
+
+                    for (int v = 0; v < V; v++) {
+                        if (graph[u][v] == 1) {
+                            if (color[v] == -1) {
+                                color[v] = 1 - color[u];
+                                queue.add(v);
+                            } else if (color[v] == color[u]) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        int[][] G = {
+            {0, 1, 1, 1, 0},
+            {1, 0, 1, 0, 0},
+            {1, 1, 0, 0, 0},
+            {1, 0, 0, 0, 1},
+            {0, 0, 0, 1, 0}
+        };
+
+        System.out.println(isTwoCliques(G) ? "Yes" : "No");
+    }
+}
