@@ -53,4 +53,71 @@ class Solution {
 }
 
 
+IF WE HAVE TO PRINT STEPS..........
+
+class Solution {
+    public int minSteps(int m, int n, int d) {
+        if (d > m && d > n || d > m + n) return -1;
+
+        Set<String> visited = new HashSet<>();
+        Queue<int[]> q = new LinkedList<>();
+
+        q.add(new int[]{0, 0});
+        visited.add("0,0");
+        int steps = 0;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+
+            for (int i = 0; i < size; i++) {
+                int[] curr = q.poll();
+                int a = curr[0], b = curr[1];
+
+                // Check goal condition
+                if (a == d || b == d)
+                    return steps;
+
+                List<int[]> nextStates = getNextStates(a, b, m, n);
+
+                for (int[] state : nextStates) {
+                    String key = state[0] + "," + state[1];
+                    if (!visited.contains(key)) {
+                        visited.add(key);
+                        q.add(state);
+                    }
+                }
+            }
+            steps++;
+        }
+
+        return -1;
+    }
+
+    private List<int[]> getNextStates(int a, int b, int m, int n) {
+        List<int[]> states = new ArrayList<>();
+
+        // Fill Jug1 or Jug2
+        states.add(new int[]{m, b});
+        states.add(new int[]{a, n});
+
+        // Empty Jug1 or Jug2
+        states.add(new int[]{0, b});
+        states.add(new int[]{a, 0});
+
+        // Pour Jug1 -> Jug2
+        int pourToB = Math.min(a, n - b);
+        states.add(new int[]{a - pourToB, b + pourToB});
+
+        // Pour Jug2 -> Jug1
+        int pourToA = Math.min(b, m - a);
+        states.add(new int[]{a + pourToA, b - pourToA});
+
+        return states;
+    }
+}
+
+
+
+
+
 
