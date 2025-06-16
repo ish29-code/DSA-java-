@@ -1,0 +1,21 @@
+Input: val = [1, 1], wt = [2, 1], capacity = 3
+Output: 3
+Explanation: The optimal choice is to pick the 2nd element 3 times.
+
+
+class Solution {
+    static int knapSack(int val[], int wt[], int capacity) {
+        // code here
+        int n = val.length;
+        int dp[] = new int[capacity+1];
+        
+        for(int w=0;w<=capacity;w++){
+            for(int i=0;i<n;i++){
+                if(wt[i]<=w){
+                    dp[w] = Math.max(dp[w],val[i]+dp[w-wt[i]]);
+                }
+            }
+        }
+        return dp[capacity];
+    }
+}
