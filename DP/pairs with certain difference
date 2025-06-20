@@ -1,6 +1,16 @@
-Input: arr[] = [10, 9, 4, 5, 4, 8, 6]
-Output: 3
-Explanation: The three possible subsequences of length 3 are {10, 9, 8}, {4, 5, 4}, and {4, 5, 6}, where adjacent elements have a absolute difference of 1. No valid subsequence of greater length could be formed.
+arr[] = {3, 5, 10, 15, 17, 12, 9}
+K = 4
+Output : 
+62
+Explanation :
+Then disjoint pairs with difference less
+than K are, (3, 5), (10, 12), (15, 17)
+max sum which we can get is 
+3 + 5 + 10 + 12 + 15 + 17 = 62
+Note that an alternate way to form 
+disjoint pairs is,(3, 5), (9, 12), (15, 17)
+but this pairing produces less sum.
+
 
 
 class Solution {
