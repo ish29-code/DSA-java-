@@ -1,0 +1,42 @@
+Input: nums = [1,1,1,1,1], target = 3
+Output: 5
+Explanation: There are 5 ways to assign symbols to make the sum of nums be target 3.
+-1 + 1 + 1 + 1 + 1 = 3
++1 - 1 + 1 + 1 + 1 = 3
++1 + 1 - 1 + 1 + 1 = 3
++1 + 1 + 1 - 1 + 1 = 3
++1 + 1 + 1 + 1 - 1 = 3
+
+
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {//O(num(sum*nums))
+        int total=0;
+        for(int num : nums){
+            total+=num;
+        }
+        if((total+target)%2!=0 || Math.abs(target)>total){
+            return 0;
+        }
+
+        int same = (total+target)/2;
+        return subsetsumcount(nums,same);
+    }
+    public int subsetsumcount(int nums[],int sum){
+        int n = nums.length;
+        int dp[][] = new int[n+1][sum+1];
+
+        dp[0][0]=1;
+
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<=sum;j++){
+                if(j>=nums[i-1]){
+                    dp[i][j] = dp[i-1][j-nums[i-1]]+dp[i-1][j];
+                }
+                else{
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return dp[n][sum];
+    }
+}
