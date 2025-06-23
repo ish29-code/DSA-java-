@@ -1,0 +1,118 @@
+Input: s1 = "abaaa", s2 = "baabaca"
+Output: ["aaaa", "abaa", "baaa"]
+Explanation: Length of lcs is 4, in lexicographical order they are "aaaa", "abaa", "baaa".
+
+
+/*class Solution {
+    public List<String> allLCS(String s1, String s2) {
+        // Code here
+        int n = s1.length();
+        int m = s2.length();
+        
+        int dp[][] = new int[n+1][m+1];
+        
+        for(int i=0;i<=n;i++){
+            for(int j=0;j<=m;j++){
+                dp[i][j] = 0;
+            }
+        }
+        
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(s1.charAt(i-1)==s2.charAt(j-1)){
+                    dp[i][j] = 1+ dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j] = Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        
+        int lcslen = dp[n][m];
+        Set<String> set = new HashSet<>();
+        findAllLCS(s1,s2,n,m,dp,"",set,lcslen);
+        
+        List<String> result = new ArrayList<>(set);
+        Collections.sort(result);
+        return result;
+    }
+    
+    private void findAllLCS(String s1,String s2,int i,int j,int dp[][],String lcs,Set<String>set,int lcslen){
+        if(lcs.length()==lcslen){
+            StringBuilder sb = new StringBuilder(lcs);
+            set.add(sb.reverse().toString());
+            return;
+        }
+        
+        if(i==0 || j==0){
+            return;
+        }
+        
+        if(s1.charAt(i-1)==s2.charAt(j-1)){
+            findAllLCS(s1,s2,i-1,j-1,dp,lcs+s1.charAt(i-1),set,lcslen);
+        }
+        else{
+            if(dp[i-1][j]>=dp[i][j]){
+                findAllLCS(s1,s2,i-1,j,dp,lcs,set,lcslen);
+            }
+            if(dp[i][j-1]>=dp[i][j]){
+                findAllLCS(s1,s2,i,j-1,dp,lcs,set,lcslen);
+            }
+        }
+    }
+}*/
+
+class Solution {
+    public List<String> allLCS(String s, String t) {
+        int m = s.length() , n = t.length();
+        // find length of LCS
+        int[][] dp = new int[m+1][n+1];
+        for(int i = 1 ; i <= m ;i++){
+            for(int j = 1;j<= n ;j++){
+                if(s.charAt(i-1) == t.charAt(j-1)){
+                    
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j] = Math.max(dp[i-1][j] , dp[i][j-1]);
+                }
+            }
+        }
+        Set<String> res = new LinkedHashSet<>();
+        Map<String,Set<String>> dpMap = new HashMap<>();
+        findLongestString(dp,s,t,m,n,res,new StringBuilder(),dpMap);
+        List<String> ans = new ArrayList<>(res);
+        Collections.sort(ans);
+        return ans;
+    }
+    private void findLongestString(int[][] dp ,String s , String t, int i , int j , Set<String> res , StringBuilder cur,Map<String,Set<String>> dpMap){
+        if(i == 0 || j == 0){
+            res.add(cur.reverse().toString());// add answer
+            cur.reverse(); // again reverse the cur
+            return;
+        }
+        
+        String key = i + ","+ j + cur.toString(); // memoziation
+        if(dpMap.containsKey(key)){
+            res.addAll(dpMap.get(key));
+            return ;
+        }
+        if(s.charAt(i-1) == t.charAt(j-1)){
+            cur.append(s.charAt(i-1));
+            findLongestString(dp,s,t,i-1,j-1,res,cur,dpMap);
+            cur.deleteCharAt(cur.length()-1);
+        }
+        else{ 
+            // check two diagonals , thats why two if clause
+            if(dp[i-1][j] == dp[i][j]){
+                findLongestString(dp,s,t,i-1,j,res,cur,dpMap);
+            
+            }
+            if(dp[i][j-1] == dp[i][j]){
+                findLongestString(dp,s,t,i,j-1,res,cur,dpMap);
+            }
+        }
+        dpMap.put(key,new HashSet<>(res)); // store the result to the map like dp array
+        
+    }
+}    
