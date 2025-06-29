@@ -1,0 +1,35 @@
+Input: N = 4
+a[2][] = {{4, 5, 3, 2}, 
+      {2, 10, 1, 4}}
+T[2][] = {{0,7, 4, 5},
+           {0,9, 2, 8}}
+e[2] = {10,12}, x[2] = {18,7}
+
+Output: 35
+Explanation: 
+According to the TC, this would 
+be the following diagram
+
+The bold line shows the path covered by the 
+car chassis for given input values. So the minimum 
+time taken by the car is 35.
+
+
+
+class Solution {
+    public static int carAssembly(int n, int[][] a, int[][] T, int[] e, int[] x) {
+        // code here
+        int dp[] = new int[2];
+        dp[0] = e[0] + a[0][0];
+        dp[1] = e[1] + a[1][0];
+        
+        for(int i=1;i<n;i++){
+            int line0 = Math.min(dp[0]+a[0][i],dp[1]+a[0][i]+T[1][i]);
+            int line1 = Math.min(dp[1]+a[1][i],dp[0]+a[1][i]+T[0][i]);
+            dp[0] = line0;
+            dp[1] = line1;
+        }
+        
+        return Math.min(dp[0]+x[0],dp[1]+x[1]);
+    }
+}
