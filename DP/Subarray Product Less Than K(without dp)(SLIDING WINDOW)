@@ -23,3 +23,21 @@ class Solution {
         return count;
     }
 }
+OR
+class Solution {
+
+    public long countSubArrayProductLessThanK(long arr[], int n, long k) {
+        long count=0,product=1;
+        int left=0;
+        
+        for(int right=0;right<n;right++){
+            product *= arr[right];
+            
+            while(left<=right && product>=k){
+                product /= arr[left++];
+            }
+            count += right-left+1;
+        }
+        return count;
+    }
+}
