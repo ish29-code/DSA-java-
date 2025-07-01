@@ -1,0 +1,40 @@
+Input: nums = [3,1,5,8]
+Output: 167
+Explanation:
+nums = [3,1,5,8] --> [3,5,8] --> [3,8] --> [8] --> []
+coins =  3*1*5    +   3*5*8   +  1*3*8  + 1*8*1 = 167
+
+class Solution {
+    public int maxCoins(int[] nums) {
+        int n = nums.length;
+        int balloon[] = new int[n+2];
+        balloon[0] = balloon[n + 1] = 1;
+
+        for(int i=0;i<n;i++){
+            balloon[i+1]=nums[i];
+        }
+
+        int dp[][] = new int[n+2][n+2];
+        return solve(balloon,1,n,dp);
+    }
+    public int solve(int nums[],int i,int j,int dp[][]){
+        //base case
+        if(i>j){
+            return 0;
+        }
+        if(dp[i][j]!=0){
+            return dp[i][j];
+        }
+
+        //k loop
+        int maxcost = 0;
+        for(int k=i;k<=j;k++){
+            int temp = solve(nums,i,k-1,dp)+solve(nums,k+1,j,dp)+nums[i-1]*nums[k]*nums[j+1];
+
+            maxcost = Math.max(maxcost,temp);
+        }
+        dp[i][j] = maxcost;
+        return dp[i][j];
+
+    }
+}
