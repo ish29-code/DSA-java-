@@ -1,0 +1,55 @@
+Input: s = "abc", k = 2
+Output: 1
+Explanation: You can split the string into "ab" and "c", and change 1 character in "ab" to make it palindrome.
+
+class Solution {
+    static int t[][];
+    public int minCut(String s) {
+        int n = s.length();
+        t = new int[n][n]; 
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                t[i][j]=-1;//initiallizing all -1
+            }
+        }
+        return solve(s,0,n-1);
+    }
+    public int solve(String s,int i,int j){
+        if(i>=j || ispallindrome(s,i,j)){
+            return 0;
+        }
+        if(t[i][j]!=-1){
+            return t[i][j];
+        }
+
+        int min = Integer.MAX_VALUE;
+        for(int k=i;k<j;k++){
+            //only when left is a pallindrome
+            if(ispallindrome(s,i,k)){
+                int right;
+                if(t[k+1][j]!=-1){
+                    right = t[k+1][j];
+                }
+                else{
+                    right = solve(s,k+1,j);
+                    t[k+1][j]=right;
+                }
+
+                int temp = 1+right;
+                min = Math.min(min,temp);
+            }
+        }
+        t[i][j]=min;
+        return t[i][j];
+    }
+    public boolean ispallindrome(String s,int i,int j){
+        while(i<j){
+            if(s.charAt(i)!=s.charAt(j)){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
