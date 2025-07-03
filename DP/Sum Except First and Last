@@ -1,0 +1,21 @@
+Input: arr[] = [5, 24, 39, 60, 15, 28, 27, 40, 50, 90]
+Output: 283
+Explanation: The sum of all the elements except the first and last element is 283
+
+
+class Solution {
+    int sumExceptFirstLast(int[] arr) {
+        // your code here
+        int n = arr.length;
+        if(n<=2){
+            return 0;
+        }
+        int dp[] = new int[n];
+        dp[0]=arr[0];
+        
+        for(int i=1;i<n-1;i++){
+            dp[i] = dp[i-1]+arr[i];
+        }
+        return dp[n-2]-dp[0];
+    }
+}
