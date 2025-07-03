@@ -34,7 +34,7 @@ class Solution {
     }
 }
 
-OR---------->MAXIMAL SQUARE
+OR---------->MAXIMAL SQUARE ----> area of matrix square
 
 class Solution {
     public int maximalSquare(char[][] matrix) {
