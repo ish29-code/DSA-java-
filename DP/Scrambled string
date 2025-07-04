@@ -1,0 +1,64 @@
+Input: S1="coder", S2="ocder"
+Output: Yes
+Explanation: ocder is a scrambled 
+form of coder.
+
+    ocder
+   /    \
+  oc    der
+ / \    
+o   c  
+
+As "ocder" can represent it 
+as a binary tree by partitioning 
+it into two non-empty substrings.
+We just have to swap 'o' and 'c' 
+to get "coder".
+
+
+class Solution {
+    static Map<String,Boolean> map = new HashMap<>();
+    static boolean isScramble(String S1, String S2) {
+        // code here
+        map.clear();
+        if(S1.length()!=S2.length()){
+            return false;
+        }
+        if(S1.equals(S2)){
+            return true;
+        }
+        return solve(S1,S2);
+    }
+    static boolean solve(String s1,String s2){
+        int n = s1.length();
+        String key = s1+" "+s2;
+        if(map.containsKey(key)){
+           return map.get(key); 
+        }
+        
+        if(s1.equals(s2)){
+            map.put(key,true);
+            return true;
+        }
+        
+        char a[]=s1.toCharArray();
+        char b[]=s2.toCharArray();
+        Arrays.sort(a);Arrays.sort(b);
+        if(!Arrays.equals(a,b)){
+            map.put(key,false);
+            return false;
+        }
+        
+        for(int i=1;i<n;i++){
+            boolean caseI = solve(s1.substring(0,i),s2.substring(n-i)) && solve(s1.substring(i),s2.substring(0,n-i));
+            boolean caseII = solve(s1.substring(0,i),s2.substring(0,i)) && solve(s1.substring(i),s2.substring(i));
+            
+            if(caseI || caseII){
+                map.put(key,true);
+                return true;
+            }
+        }
+        map.put(key,false);
+        return false;
+    }
+}
