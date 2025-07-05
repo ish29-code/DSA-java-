@@ -1,0 +1,71 @@
+Input: s = "T|T&F^T"
+Output: 4
+Explaination: The expression evaluates to true in 4 ways: ((T|T)&(F^T)), (T|(T&(F^T))), (((T|T)&F)^T) and (T|((T&F)^T)).
+
+class Solution {
+    static Map<String, Integer> map = new HashMap<>();
+    static int countWays(String s) {
+        // code here
+        map.clear();
+        int n = s.length();
+        
+        
+        return solve(s,0,n-1,true);
+    }
+    static int solve(String s,int i,int j,boolean istrue){
+        int n = s.length();
+        
+        if(i>j){
+            return 0;
+        }
+        if(i==j){
+            if(istrue){
+                return s.charAt(i)=='T'?1:0;
+            }
+            else{
+                return s.charAt(i)=='F'?1:0;
+            }
+        }
+        
+        String temp = i+" "+j+" "+istrue;
+        
+        if(map.containsKey(temp)){
+            return map.get(temp);
+        }
+        
+        int ans = 0;
+        for(int k=i+1;k<=j-1;k+=2){
+            int lt = solve(s,i,k-1,true);
+            int lf = solve(s,i,k-1,false);
+            int rt = solve(s,k+1,j,true);
+            int rf = solve(s,k+1,j,false);
+            
+            if(s.charAt(k)=='&'){
+                if(istrue){
+                    ans+=lt*rt;
+                }
+                else{
+                    ans+=lt*rf + lf*rf + lf*rt;
+                }
+            }
+            else if(s.charAt(k)=='|'){
+                if(istrue){
+                    ans+=lf*rt + lt*rt + lt*rf;
+                }
+                else{
+                    ans+=lf*rf;
+                }
+            }
+            else if(s.charAt(k)=='^'){
+                if(istrue){
+                    ans+=lf*rt +rf*lt;
+                }
+                else{
+                    ans+=rf*lf + rt*lt;
+                }
+            }
+        }
+        map.put(temp,ans);
+        return ans;
+    }
+}
