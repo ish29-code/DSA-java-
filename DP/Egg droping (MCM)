@@ -1,0 +1,68 @@
+Input: n = 2, k = 36
+Output: 8
+Explanation: In all the situations, 8 maximum moves are required to find the maximum floor. Following is the strategy to do so:
+Drop from floor 8 → If breaks, check 1-7 sequentially.
+Drop from floor 15 → If breaks, check 9-14.
+Drop from floor 21  → If breaks, check 16-20.
+Drop from floor 26 → If breaks, check 22-25.
+Drop from floor 30 → If breaks, check 27-29.
+Drop from floor 33 → If breaks, check 31-32.
+Drop from floor 35 → If breaks, check 34.
+Drop from floor 36 → Final check.
+
+
+class Solution {
+    static int[][] t = new int[1001][1001];
+
+    static int eggDrop(int n, int k) {
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= k; j++) {
+                t[i][j] = -1;
+            }
+        }
+        return solve(n, k);
+    }
+
+    static int solve(int e, int f) {
+        if (f == 0 || f == 1) return f;
+        if (e == 1) return f;
+
+        if (t[e][f] != -1) return t[e][f];
+
+        int low = 1, high = f;
+        int min = Integer.MAX_VALUE;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+
+            int breakCase, noBreakCase;
+
+            if (t[e - 1][mid - 1] != -1) {
+                breakCase = t[e - 1][mid - 1];
+            } else {
+                breakCase = solve(e - 1, mid - 1);
+                t[e - 1][mid - 1] = breakCase;
+            }
+
+            if (t[e][f - mid] != -1) {
+                noBreakCase = t[e][f - mid];
+            } else {
+                noBreakCase = solve(e, f - mid);
+                t[e][f - mid] = noBreakCase;
+            }
+
+            int temp = 1 + Math.max(breakCase, noBreakCase);
+            min = Math.min(min, temp);
+
+            // Move towards worst-case heavier side
+            if (breakCase > noBreakCase) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        t[e][f] = min;
+        return min;
+    }
+}
