@@ -1,0 +1,62 @@
+Input: arr= [1, 5, 4]
+Output: 3
+Explanation: The entire sequenece is a good sequence.
+
+class Solution {
+    public int alternatingMaxLength(int[] arr) {
+        // code here
+        int n = arr.length;
+        if(n==0){
+            return 0;
+        }
+        
+        int inc = 1;
+        int dec = 1;
+        
+        for(int i=1;i<n;i++){
+            if(arr[i]>arr[i-1]){
+                inc = dec+1;
+            }
+            else if(arr[i-1]>arr[i]){
+                dec = inc+1;
+            }
+        }
+        return Math.max(inc,dec);
+        
+    }
+}
+
+FOR SUBARRAY
+Input: nums = [2,3,4,3,4]
+
+Output: 4
+
+Explanation:
+
+The alternating subarrays are [2, 3], [3,4], [3,4,3], and [3,4,3,4]. The longest of these is [3,4,3,4], which is of length 4.
+
+
+class Solution {
+    public int alternatingSubarray(int[] nums) {
+        int n = nums.length;
+        int maxlen = -1;
+        int currlen = 1;
+
+        for(int i=1;i<n;i++){
+            if(nums[i]-nums[i-1]==((currlen%2==1) ? 1:-1)){
+                currlen++;
+                if(currlen>=2){
+                    maxlen = Math.max(maxlen,currlen);
+                }
+            }
+            else if(nums[i]-nums[i-1]==1){
+                currlen = 2;
+                maxlen = Math.max(maxlen,currlen);
+            }
+            else{
+                currlen = 1;
+            }
+        }
+        return maxlen;
+    }
+}
