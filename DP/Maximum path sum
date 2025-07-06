@@ -1,0 +1,33 @@
+Input: mat[][] = [[3, 6, 1], [2, 3, 4], [5, 5, 1]]
+Output: 15
+Explaination: The best path is (0, 1) -> (1, 2) -> (2, 1). It gives the maximum sum as 15.
+
+
+class Solution {
+    public int maximumPath(int[][] mat) {
+        // code here
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        int dp[][] = new int[n][m];
+        for(int j=0;j<m;j++){
+            dp[0][j]=mat[0][j];
+        }
+        
+        for(int i=1;i<n;i++){
+            for(int j=0;j<m;j++){
+                int up = dp[i-1][j];
+                int leftdiag = (j>0)?dp[i-1][j-1]:0;
+                int rightdiag = (j<m-1)?dp[i-1][j+1]:0;
+                
+                dp[i][j] = mat[i][j] + Math.max(up,Math.max(leftdiag,rightdiag));
+            }
+        }
+        
+        int maxpath = Integer.MIN_VALUE;
+        for(int j=0;j<m;j++){
+            maxpath = Math.max(maxpath,dp[n-1][j]);
+        }
+        return maxpath;
+    }
+}
