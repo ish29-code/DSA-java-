@@ -1,0 +1,37 @@
+Input: 
+n = 5
+x = 3
+y = 4
+Output: 
+1
+Explanation:
+There are 5 coins, every player can pick 1 or 3 or 4 coins on his/her turn. Geek can win by picking 3 coins in first chance. Now 2 coins will be left so his friend will pick one coin and now Geek can win by picking the last coin.
+
+
+class Solution {
+    public static int findWinner(int n, int x, int y) {
+        // code here
+        
+        int dp[] = new int[n+1];
+        Arrays.fill(dp,0);
+        dp[0]=0;
+        dp[1]=1;
+        
+        for(int i=2;i<=n;i++){
+            if(i-1>=0 && dp[i-1]==0){
+                dp[i] = 1;
+            }
+            else if(i-x>=0 && dp[i-x]==0){
+                dp[i]=1;
+            }
+            else if(i-y>=0 && dp[i-y]==0){
+                dp[i]=1;
+            }
+            else{
+                dp[i]=0;
+            }
+        }
+        
+        return dp[n];
+    }
+}
