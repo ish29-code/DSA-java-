@@ -1,0 +1,30 @@
+Input: arr[] = [5, 3, 7, 10]
+Output: 15
+Explanation: The user collects the maximum value as 15(10 + 5). It is guaranteed that we cannot get more than 15 by any possible moves.
+
+class Solution {
+    public int maximumAmount(int arr[]) {
+        // code here
+        int n = arr.length;
+        int dp[][] = new int[n][n];
+        
+        for(int g=0;g<n;g++){
+            for(int i=0,j=g;j<n;i++,j++){
+                if(g==0){
+                    dp[i][j]=arr[i];
+                }
+                else if(g==1){
+                    dp[i][j] = Math.max(arr[i],arr[j]);
+                }
+                else{
+                    int pickI = arr[i]+Math.min(dp[i+2][j],dp[i+1][j-1]);
+                    int pickJ = arr[j]+Math.min(dp[i+1][j-1],dp[i][j-2]);
+                    
+                    dp[i][j]=Math.max(pickI,pickJ);
+                }
+            }
+        }
+        return dp[0][n-1];
+        
+    }
+}
