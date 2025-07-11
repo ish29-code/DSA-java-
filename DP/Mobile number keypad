@@ -1,0 +1,62 @@
+Input: n = 2
+Output: 36
+Explanation: Possible 2-digit numbers follow keypad moves -
+From 0 → 00, 08 (2), 
+From 1 → 11, 12, 14 (3),
+From 3 → 33, 32, 36 (3), and so on,
+total 36 valid combinations are possible.
+
+class Solution {
+    public int getCount(int n) {
+        // code here
+        if(n<=0){
+            return 0;
+        }
+        if(n==1){
+            return 10;
+        }
+        
+        int keypad[][] = {{1,2,3},
+                          {4,5,6},
+                          {7,8,9},
+                          {-1,0,-1}};
+                          
+        int dp[][][] = new int[n+1][4][3];  
+        int dir[][] = {{0,0},{0,-1},{0,1},{1,0},{-1,0}};
+        
+        for(int i=0;i<4;i++){
+            for(int j=0;j<3;j++){
+                if(keypad[i][j]!=-1){
+                    dp[1][i][j] = 1;
+                }
+            }
+        }
+        for(int step=2;step<=n;step++){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<3;j++){
+                    if(keypad[i][j]==-1){
+                        continue;
+                    }
+                    for(int dirr[]:dir){
+                        int ni=i+dirr[0],nj=j+dirr[1];
+                        
+                        if(ni>=0 && ni<4 && nj>=0 && nj<3 && keypad[ni][nj]!=-1){
+                            dp[step][i][j]+=dp[step-1][ni][nj];
+                        }
+                    }
+                }
+            }
+        }
+        
+        int total=0;
+        for(int i=0;i<4;i++){
+            for(int j=0;j<3;j++){
+                if(keypad[i][j]!=-1){
+                    total+=dp[n][i][j];
+                }
+            }
+        }
+        return total;
+                          
+    }
+}
