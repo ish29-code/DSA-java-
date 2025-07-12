@@ -1,0 +1,26 @@
+Input:   prices[] = [10, 22, 5, 75, 65, 80]
+Output:  87
+Explanation: Buy at 10, sell at 22, profit = 22 - 10 = 12
+                       Buy at 5 and sell at 80, total profit = 12 + (80 - 5) = 87
+
+class Solution {
+    public static int maxProfit(int[] prices) {
+        // code here
+        int n = prices.length;
+        int dp[][][] = new int[n+1][3][2];
+        
+        for(int i=n-1;i>=0;i--){
+            for(int k=1;k<=2;k++){
+                for(int b=0;b<=1;b++){
+                    if(b==1){//we can buy
+                        dp[i][k][b] = Math.max(-prices[i]+dp[i+1][k][0],dp[i+1][k][1]);
+                    }
+                    else{//we can sell
+                        dp[i][k][b] = Math.max(prices[i]+dp[i+1][k-1][1],dp[i+1][k][0]);
+                    }
+                }
+            }
+        }
+        return dp[0][2][1];
+    }
+}
