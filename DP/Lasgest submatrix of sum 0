@@ -1,0 +1,35 @@
+Input: mat[][] = [[9, 7, 16, 5], [1, -6, -7, 3], [1, 8, 7, 9], [7, -2, 0, 10]] 
+Output: 6
+
+class Solution {
+    public static int zeroSumSubmat(int[][] mat) {
+        // code here
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        int dp[][] = new int[n+1][m+1];
+        
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                dp[i][j] = mat[i-1][j-1]+dp[i-1][j]+dp[i][j-1]-dp[i-1][j-1];
+            }
+        }
+        
+        int maxarea = 0;
+        for(int r1=1;r1<=n;r1++){
+            for(int r2=r1;r2<=n;r2++){
+                for(int c1=1;c1<=m;c1++){
+                    for(int c2=c1;c2<=m;c2++){
+                        int sum = dp[r2][c2]-dp[r1-1][c2]-dp[r2][c1-1]+dp[r1-1][c1-1];
+                        
+                        if(sum==0){
+                           int area = (r2-r1+1)*(c2-c1+1);
+                           maxarea = Math.max(maxarea,area);
+                        }
+                    }
+                }
+            }
+        }
+        return maxarea;
+    }
+}
