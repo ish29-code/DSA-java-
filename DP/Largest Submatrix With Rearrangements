@@ -1,0 +1,37 @@
+Input: matrix = [[0,0,1],[1,1,1],[1,0,1]]
+Output: 4
+Explanation: You can rearrange the columns as shown above.
+The largest submatrix of 1s, in bold, has an area of 4.
+
+class Solution {
+    public int largestSubmatrix(int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int dp[][] = new int[n][m];
+        int maxarea=0;
+
+        for(int j=0;j<m;j++){
+            dp[0][j] = matrix[0][j];
+            for(int i=1;i<n;i++){
+                if(matrix[i][j]==1){
+                    dp[i][j] = dp[i-1][j]+1;
+                }
+                else{
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            Arrays.sort(dp[i]);
+            for(int j=m-1;j>=0;j--){
+                int height = dp[i][j];
+                int width = m-j;
+
+                maxarea = Math.max(maxarea,height*width);
+            }
+        }
+
+        return maxarea;
+    }
+}
